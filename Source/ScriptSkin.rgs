@@ -1,0 +1,24 @@
+HKCR
+{
+	FS3DME.ScriptSkin.1 = s 'ScriptSkin Class'
+	{
+		CLSID = s '{621AC0AB-A52C-4B11-AD5A-654371035877}'
+	}
+	FS3DME.ScriptSkin = s 'ScriptSkin Class'
+	{
+		CLSID = s '{621AC0AB-A52C-4B11-AD5A-654371035877}'
+		CurVer = s 'FS3DME.ScriptSkin.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {621AC0AB-A52C-4B11-AD5A-654371035877} = s 'ScriptSkin Class'
+		{
+			ProgID = s 'FS3DME.ScriptSkin.1'
+			VersionIndependentProgID = s 'FS3DME.ScriptSkin'
+			ForceRemove 'Programmable'
+			LocalServer32 = s '%MODULE%'
+			val AppID = s '%APPID%'
+			'TypeLib' = s '{248741A8-804C-4041-8E72-1492FA0D79C3}'
+		}
+	}
+}

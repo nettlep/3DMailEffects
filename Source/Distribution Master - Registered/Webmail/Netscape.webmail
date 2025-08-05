@@ -1,0 +1,661 @@
+// ---------------------------------------------------------------------------------------------------------------------------------
+//  _   _      _
+// | \ | |    | |
+// |  \| | ___| |_ ___  ___  __ _ _ __   ___ 
+// | . ` |/ _ \ __/ __|/ __|/ _` | '_ \ / _ \
+// | |\  |  __/ |_\__ \ (__| (_| | |_) |  __/
+// |_| \_|\___|\__|___/\___|\__,_| .__/ \___|
+//                               | |
+//                               |_|
+//
+// Webmail Script for 3D Mail Effects - http://www.FluidStudios.com/3dme/
+//
+// Copyright 2001, Fluid Studios, Inc., all rights reserved.
+//
+// ---------------------------------------------------------------------------------------------------------------------------------
+//
+// Description:
+//
+//   The purpose of this script is to completely handle Netscape transactions, building a list of emails even if the mailbox has
+//   many pages.
+//
+// History:
+//
+//   Originally created on 03/03/2001 by Paul Nettle
+//
+// Author:
+//
+//   Paul Nettle (3dme@FluidStudios.com)
+//
+// Notes:
+//
+//   I happen to think that 80-column text went out with DOS, so deal with my phat 132-column script! =)
+//   ...and I use an 8-character tab
+//
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// __retrieve is always where the script execution begins for email retrieval
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+__retrieve:
+
+	Error "Netscape currently not supported."
+
+	// Make the username/password url-safe
+
+	convertReservedURI __user_name
+	convertReservedURI __user_pass
+
+	// Go read the inbox
+
+	Call	login
+
+	// Now, go create messages with all those URLs we just gathered
+
+	Call	collect_messages
+
+	// Return from this script, back to 3DME
+
+	Return
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// __delete is always where the script execution begins for deleting emails
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+__delete:
+	// Netscape requires Javascript access to the Cookie information to perform deletes. Can't do that. Bummer.
+	
+	Error "Netscape currently not supported."
+	
+	// Make the username/password url-safe
+
+	convertReservedURI __user_name
+	convertReservedURI __user_pass
+
+	// Go read the inbox
+
+	Call	login
+
+	// Now, go create messages with all those URLs we just gathered
+
+	Call	find_message_for_delete
+
+	// Return from this script, back to 3DME
+
+	Return
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// Login and gather message URLs from all pages in the Netscape inbox
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+	// Fill out the logon form
+
+login:
+	// Need this created early on (and only once)
+
+	SetVar	message_url_list
+
+	// Get the Netscape main page (with login information)
+
+	OnError	err_connect
+	GetHTTP	pageData "http://home.netscape.com/webmail/"
+	Call	check_for_meta_refresh
+	Call	check_for_auth
+	
+	// Is this the introduction page?
+
+intro_page:
+	OnError	sign_in
+	Find	pageData "<title>WebMail Introduction Page</title>"
+
+	OnError	err_login
+        SetVar	login_url pageData
+	Find	login_url "logonbutton.gif"
+	RFind	login_url "href=\""
+	Skip	login_url 6
+	Erase	login_url 0 @login_url
+	Find	login_url "\""
+	Erase	login_url @login_url
+
+	OnError	err_connect
+	GetHTTP	pageData login_url
+	Call	check_for_meta_refresh
+	Call	check_for_auth
+
+	// Sign-in page - enter username/password
+
+sign_in:
+	OnError	test_page
+	Find	pageData "<title>Netcenter: Public Sign In</title>"
+	
+	OnError	err_login
+	SetVar	signin_url pageData
+	Find	signin_url "Action=\""
+	Skip	signin_url 8
+	Erase	signin_url 0 @signin_url
+	Find	signin_url "\""
+	Erase	signin_url @signin_url
+	SetVar	signin_url signin_url "?U2_USERNAME=" __user_name "&U2_PASSWORD=" __user_pass "&U2_ENDURL=http://mailredirect.netscape.com/&U2_NEW_ENDURL=http://mailredirect.netscape.com/?nu=1&U2_EXITURL=http://home.netscape.com/&U2_SOURCE=Webmail&U2_CS=iso-8859-1&U2_LA=en&U2_OPERATION=login"
+
+	OnError	err_connect
+	GetHTTP	pageData signin_url
+	Call	check_for_meta_refresh
+	Call	check_for_auth
+
+	// Netscape has this "test" page that is just a hidden form with a javascript "onLoad(SubmitForm();" in it...
+	// Since the title of the page is "Test" we'll make this code optional
+
+test_page:
+	OnError	intermediate_page
+	Find	pageData "<title>test</title>"
+
+	OnError	err_login
+	SetVar	test_url pageData
+	Find	test_url "Action=\""
+	Skip	test_url 8
+	Erase	test_url 0 @test_url
+	Find	test_url "\""
+	Erase	test_url @test_url
+	SetVar	hidden_elements
+	
+	Call	gather_hidden_elements
+	SetVar	test_url test_url "?" hidden_elements
+
+	OnError	err_connect
+	GetHTTP	pageData test_url
+	Call	check_for_meta_refresh
+	Call	check_for_auth
+
+	// I would SWEAR that Netscape puts in these silly intermediate redirects just to try to foil programs like 3DME...
+
+intermediate_page:
+	OnError	intermediate_page2
+	Find	pageData "SRC=\"webmail.js\""
+
+	OnError	err_login
+	SetVar	inter_url pageData
+	Find	inter_url "location=\""
+	Skip	inter_url 10
+	Erase	inter_url 0 @inter_url
+	Find	inter_url "\""
+	Erase	inter_url @inter_url
+	
+	OnError	err_connect
+	GetHTTP	pageData inter_url
+	Call	check_for_meta_refresh
+	Call	check_for_auth
+
+intermediate_page2:
+	OnError	at_inbox
+	Find	pageData "uregendurl"
+
+	OnError	err_login
+	SetVar	inter_url pageData
+	Find	inter_url "ACTION=\""
+	Skip	inter_url 8
+	Erase	inter_url 0 @inter_url
+	Find	inter_url "\""
+	Erase	inter_url @inter_url
+	
+	OnError	err_connect
+	GetHTTP	pageData inter_url
+	Call	check_for_meta_refresh
+	Call	check_for_auth
+
+	// See if we're already in the inbox
+
+at_inbox:
+	OnError	load_inbox
+	Find	pageData "<TITLE>Netscape Mail - Message List</TITLE>"
+	
+	Goto	login_done
+
+load_inbox:
+	OnError	err_inbox
+	Find	pageData "<title>Netscape Mail - Welcome</title>"
+
+	SetVar	inbox_url pageData
+	Find	inbox_url "Get Mail"
+	RFind	inbox_url "a href=\""
+	Skip	inbox_url 8
+	Erase	inbox_url 0 @inbox_url
+	Find	inbox_url "\""
+	Erase	inbox_url @inbox_url
+	SetVar	inbox_url inbox_url
+	
+	OnError	err_connect
+	GetHTTP	pageData inbox_url
+	Call	check_for_meta_refresh
+	Call	check_for_auth
+
+login_done:
+
+	// Done
+
+	Return
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// Gather hidden elements from a form
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+gather_hidden_elements:
+
+	// Find a hidden field
+
+	OnError	gather_hidden_elements_done
+	Find	pageData "hidden"
+
+	// Find the name of it
+
+	Find	pageData "name=\""
+	Skip	pageData 6
+	Erase	pageData 0 @pageData
+	SetVar	name pageData
+	Find	name "\""
+	Erase	name @name
+
+	// Get the value of the field
+
+	Find	pageData "value=\""
+	Skip	pageData 7
+	Erase	pageData 0 @pageData
+	SetVar	value pageData
+	Find	value "\""
+	Erase	value @value
+
+	SetVar	hidden_elements hidden_elements name "=" value "&"
+
+	// Next hidden field, please
+
+	Goto	gather_hidden_elements
+
+gather_hidden_elements_done:
+
+	// Remove the final ampersand
+	
+	Skip	hidden_elements 999999
+	Erase	hidden_elements @hidden_elements
+
+	Return
+	
+// ---------------------------------------------------------------------------------------------------------------------------------
+// Go read the messages in the current page (and read multiple pages if necessary)
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+collect_messages:
+
+	// Clear these
+
+	SetVar	msgid
+	SetVar	field_from
+	SetVar	field_to
+	SetVar	field_subj
+	SetVar	field_date
+	SetVar	body
+	SetVar	attach
+
+	// Get the message id
+	
+	OnError	collect_messages_next_page
+	Find	pageData "MsgUID"
+	Find	pageData "value=\""
+	Skip	pageData 7
+	Erase	pageData 0 @pageData
+	SetVar	msgid pageData
+	Find	msgid "\""
+	Erase	msgid @msgid
+
+	// Get the URL for this message
+	
+	Find	pageData "href=\""
+	Skip	pageData 6
+	Erase	pageData 0 @pageData
+	SetVar	message_url pageData
+	Find	message_url "\""
+	Erase	message_url @message_url
+	
+	// Get the subject
+	
+	Find	pageData ">"
+	Skip	pageData 1
+	Erase	pageData 0 @pageData
+	SetVar	field_subj pageData
+	Find	field_subj "</"
+	Erase	field_subj @field_subj
+	RemTags	field_subj
+	UnHTML	field_subj
+	Strip	field_subj
+	
+	// Get the from field
+	
+	Find	pageData "list-email"
+	Find	pageData ">"
+	Skip	pageData 1
+	Erase	pageData 0 @pageData
+	SetVar	field_from pageData
+	Find	field_from "<"
+	Erase	field_from @field_from
+	RemTags	field_from
+	UnHTML	field_from
+	Strip	field_from
+	
+	// Get the date
+
+	Find	pageData "list-date"
+	Find	pageData ">"
+	Skip	pageData 1
+	Erase	pageData 0 @pageData
+	SetVar	field_date pageData
+	Find	field_date "<"
+	Erase	field_date @field_date
+	RemTags	field_date
+	UnHTML	field_date
+	Strip	field_date
+
+	// Do we need to bother visiting this URL?
+
+	OnError	read_message
+	SetVar	body
+	Find	__msgid_list "[$]" msgid "[$]"
+
+	// Our message ID was in the list, don't bother reading it again
+
+	Goto	collect_messages_next
+
+read_message:
+
+	// Go read the body of this email
+
+	Call	do_read_message
+
+collect_messages_next:
+
+	// Add this email
+
+	AddMail	msgid field_from field_to field_subj field_date body attach
+
+	// Next message, please
+
+	Goto	collect_messages
+
+collect_messages_next_page:
+
+	// Is there a 'next' link?
+
+	OnError	collect_messages_done
+	Find	pageData ">next<"
+	Skip	pageData -180
+
+	// Yes, strip out the URL
+
+	Find	pageData "<a href=\""
+	Skip	pageData 9
+	Erase	pageData 0 @pageData
+	Find	pageData "\""
+	Erase	pageData @pageData
+	SetVar	page_url pageData
+	
+	// Their next pointer just wraps around with a "flushListing" in it.. we'll detect this
+	
+	OnError	get_page
+	Find	page_url "flushlisting"
+	Goto	collect_messages_done
+
+	// Get the next page
+
+get_page:
+	OnError	err_connect
+	GetHTTP	pageData page_url
+	Call	check_for_auth
+
+	// Keep collecting messages
+
+	Goto	collect_messages
+
+collect_messages_done:
+
+	// Done
+	
+	Return
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// Go read a message from the variable message_url
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+do_read_message:
+
+	// Load up the actual message
+
+	OnError	err_connect
+	GetHTTP	messagePageData message_url
+	Call	check_for_auth
+
+	// Look for the signs of an attachment
+	
+	OnError	no_attach
+	Find	messagePageData "<B>Attachment:</B>"
+	Setvar	attach "1"
+	Skip	messagePageData -999999
+	
+no_attach:
+	OnError	do_read_message_done
+	Find	messagePageData "<div style"
+	Find	messagePageData ">"
+	Skip	messagePageData 1
+	Erase	messagePageData 0 @messagePageData
+	
+	Skip	messagePageData 9999999
+	RFind	messagePageData "</div>"
+	Erase	messagePageData @messagePageData
+	SetVar	body messagePageData
+
+	// Done!
+
+do_read_message_done:
+	Return
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// Go find the messages in the current page (and read multiple pages if necessary)
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+find_message_for_delete:
+
+	// Get the message id
+	
+	OnError	find_message_for_delete_next_page
+	Find	pageData "value=\"" __delete_me "\""
+
+	// Get the URL for this message
+	
+	Find	pageData "a href=\""
+	Skip	pageData 8
+	Erase	pageData 0 @pageData
+	SetVar	message_url pageData
+	Find	message_url "\""
+	Erase	message_url @message_url
+
+	// We found it
+
+	Call	do_delete_message
+
+	// We're done
+
+	Return
+
+find_message_for_delete_next_page:
+
+	// Is there a 'next' link?
+
+	OnError	find_message_for_delete_done
+	Find	pageData ">next<"
+	Skip	pageData -180
+
+	// Yes, strip out the URL
+
+	Find	pageData "<a href=\""
+	Skip	pageData 9
+	Erase	pageData 0 @pageData
+	Find	pageData "\""
+	Erase	pageData @pageData
+	SetVar	page_url pageData
+	
+	// Their next pointer just wraps around with a "flushListing" in it.. we'll detect this
+	
+	OnError	get_next_delete_page
+	Find	page_url "flushlisting"
+	Goto	find_message_for_delete_done
+
+	// Get the next page
+
+get_next_delete_page:
+	OnError	err_connect
+	GetHTTP	pageData page_url
+	Call	check_for_auth
+
+	// Keep collecting messages
+
+	Goto	find_message_for_delete
+
+find_message_for_delete_done:
+
+	// We never found it!
+
+	Error	"Unable to delete, message not found"
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// Go read a message from the variable message_url, then find its delete link, and follow that
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+do_delete_message:
+
+	// Load up the actual message
+
+	OnError	err_connect
+	GetHTTP	messagePageData message_url
+	Call	check_for_auth
+
+	OnError	err_delete
+	Find	messagePageData "cmd=deletemsg"
+	RFind	messagePageData "\""
+	Skip	messagePageData 1
+	Erase	messagePageData 0 @messagePageData
+	Find	messagePageData "\""
+	Erase	messagePageData @messagePageData
+	SetVar	delete_url messagePageData
+	
+	// By visiting this url, we delete the message
+
+	OnError	err_connect
+	GetHTTP	messagePageData delete_url
+	
+	// Done!
+
+	Return
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// Netscape loves these things....
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+check_for_meta_refresh:
+
+	// Netscape has a tendency to check for javascript. So we'll remove the <Noscript> ... </Noscript> section before continuing
+	
+	OnError	noscript_removed
+	SetVar	half1 pageData
+	Find	half1 "<Noscript>"
+	Erase	half1 @half1
+	
+	SetVar	half2 pageData
+	Find	half2 "</Noscript>"
+	Skip	half2 12
+	Erase	half2 0 @half2
+	SetVar	pageData half1 half2
+
+noscript_removed:
+
+	// Try: "refresh"
+
+	OnError	try_other_form
+	Find	pageData "http-equiv=\"refresh\""
+	Goto	do_refresh
+	
+	// Try: refresh
+
+try_other_form:
+	OnError	look_for_js_jump
+	Find	pageData "http-equiv=refresh"
+	Goto	do_refresh
+	
+look_for_js_jump:
+	OnError	refresh_ok
+	Find	pageData "top.document.location=\""
+	Skip	pageData 23
+	Erase	pageData 0 @pageData
+	Find	pageData "\""
+	Erase	pageData @pageData
+	SetVar	refresh_url pageData
+	Goto	load_refresh_page
+	
+do_refresh:
+	Find	pageData "url="
+	Skip	pageData 4
+	Erase	pageData 0 @pageData
+	Find	pageData "\""
+	Erase	pageData @pageData
+	SetVar	refresh_url pageData
+	
+	// Refresh
+	
+load_refresh_page:
+	OnError	err_connect
+	GetHTTP	pageData refresh_url
+	Call	check_for_auth
+	
+	// Recursive refresh pages?
+	
+	Goto	check_for_meta_refresh
+
+refresh_ok:
+	Return
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// Make sure they're not asking for our password
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+check_for_auth:
+
+	OnError	auth_ok
+	Find	pageData "Please Re-enter Your Screen Name & Password"
+	Goto	err_pass
+
+auth_ok:
+	Return
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// Errors
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+err_inbox:
+	Error	"Unable to locate the inbox"
+
+err_connect:
+	Error	"Unable to connect to Netscape"
+
+err_delete:
+	Error	"Error trying to delete email"
+
+err_login:
+	Error	"Error trying to login to Netscape"
+
+err_message:
+	Error	"Error trying to read message!"
+
+err_pass:
+	Error	"Verify your login/password!"
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// End
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+

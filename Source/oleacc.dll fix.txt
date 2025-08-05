@@ -1,0 +1,132 @@
+
+Just link statically, then add oleacc.dll to the linker options under "delay load" and then add "delayimp.lib" to the libs.
+
+
+
+
+------ this don't work ----->
+
+
+
+MFC 7.0 ships with a bug that doesn't delay-load the OLEACC.DLL file. As a result, all
+MFC apps compiled with the new .NET compiler will require this DLL to be present on the
+system. This file isn't always available. Below, you'll find the fix. The following
+works for Visual Studio .NET with (no service packs.)
+
+The object is to recompile MFC DLLs and the static-link AFX libs so that they no
+longer require the oleacc.dll file, but delay load it like they should. I would assume
+that future versions of the compiler (or the first service pack) will solve this problem
+automatically.
+
+DO THE FOLLOWING FOR BOTH, MFC DLLs AND THE AFX STATIC-LINK LIBS:
+-----------------------------------------------------------------
+
+Backup your .NET directory. Just in case!
+
+Edit the file C:\Program Files\Microsoft Visual Studio .NET\Vc7\atlmfc\src\mfc\mfcdll.mak:
+
+Jump down to line 279. It should look like this:
+
+/delayload:oleacc.dll
+
+...now copy that line and insert it below line 314, so that (starting at line 313) it looks
+like this:
+
+/delayload:hhctrl.ocx
+/delayload:msimg32.dll
+/delayload:oleacc.dll
+delayimp.lib
+mfcdload.lib
+
+We've just enabled delay-loading. Time do compile some stuff... the next two sections will
+cover building the MFC DLLs and the AFX (static-link libraries.) If you want both, then
+do both (I would recommend doing both, just to be complete about it.)
+
+Next, edit the file:\
+
+  C:\Program Files\Microsoft Visual Studio .NET\Vc7\atlmfc\src\mfc\makefile:
+
+Look at line 425 and change it FROM THIS:
+
+  CL_OPT=$(CL_OPT) /Zc:wchar_t /Zc:forScope
+
+...TO THIS:
+
+  CL_OPT=$(CL_OPT) /Zc:forScope
+
+Dunno why it's like that, but the original libs weren't built with that option and they'll
+cause you linker problems if you don't change this. Scary, huh? If you don't want to change
+this (you feel uncomfortable) then that's fine, just remember that ALL programs you compile
+with the static libs will need to have the /ZC:wchar_t option set, or they won't build.
+
+In order to continue to compile, you'll need the Visual C includes and path setup. If you
+don't already have them setup, you can do this by running the batch file:
+
+  C:\Program Files\Microsoft Visual Studio .NET\Vc7\bin\vcvars32.bat
+
+----------------------------------
+COMPILING THE MFC DLLs/IMPORT LIBS
+----------------------------------
+
+Delete everything from the directory:
+
+  C:\Program Files\Microsoft Visual Studio .NET\Vc7\atlmfc\lib\INTEL
+
+Go into the directory:
+
+  C:\program files\microsoft visual studio .net\vc7\atlmfc\src
+
+and run the command:
+
+  nmake /a /f atlmfc.mak MFC LIBNAME=MFC70
+  
+Then copy the contents of this folder:
+
+  C:\program files\microsoft visual studio .net\vc7\atlmfc\lib\INTEL
+
+...into this folder (every file should overwrite an existing file):
+
+  C:\program files\microsoft visual studio .net\vc7\atlmfc\lib
+
+Note that when copying these files, you don't need to copy the EXP files over, but it
+won't hurt anything.
+
+----------------------------------
+COMPILING THE AFX STATIC-LINK LIBS
+----------------------------------
+
+Delete everything from the directories:
+
+  C:\Program Files\Microsoft Visual Studio .NET\Vc7\atlmfc\lib\INTEL
+  C:\Program Files\Microsoft Visual Studio .NET\Vc7\atlmfc\src\mfc\intel
+
+Go into C:\Program Files\Microsoft Visual Studio .NET\Vc7\atlmfc\src\mfc
+
+Run the following commands (to build four versions, debug and release, with and without
+Unicode support):
+
+  nmake /a DEBUG=0 DLL=0 CODEVIEW=1 BROWSE=0 BROWSEONLY=0 UNICODE=0 OBJ=$NWR
+  nmake /a DEBUG=0 DLL=0 CODEVIEW=1 BROWSE=0 BROWSEONLY=0 UNICODE=1 OBJ=$UWR
+  nmake /a DEBUG=1 DLL=0 CODEVIEW=1 BROWSE=0 BROWSEONLY=0 UNICODE=0 OBJ=$NWD
+  nmake /a DEBUG=1 DLL=0 CODEVIEW=1 BROWSE=0 BROWSEONLY=0 UNICODE=1 OBJ=$UWD
+
+Next, go into the directory:
+
+  C:\Program Files\Microsoft Visual Studio .NET\Vc7\atlmfc\lib\INTEL
+
+And copy these files (they'll be the most recent files):
+
+  NafxcW.lib
+  NafxcW.pwb
+  UafxcW.lib
+  uafxcW.pdb
+  NafxcWD.lib
+  nafxcwd.pdb
+  UafxcWD.lib
+  UafxcWD.pwb
+
+...to the directory:
+
+  C:\Program Files\Microsoft Visual Studio .NET\Vc7\atlmfc\lib
+
+You're done.

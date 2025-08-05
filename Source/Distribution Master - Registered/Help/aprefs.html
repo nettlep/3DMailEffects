@@ -1,0 +1,198 @@
+<html>
+	<head>
+		<title>3D Mail Effects</title>
+		<META HTTP-EQUIV="Content-Language" CONTENT="EN">
+		<META NAME="copyright" CONTENT="Copyright 2001, Fluid Studios. All rights reserved.">
+	</head>
+	<body bgcolor=#FFFFFF text=#ffffff vlink=#d0d0ff avlink=#400000 link=#ffff80>
+		<table width=100% height=100% border=0 cellpadding=5 cellspacing=0 bgcolor=#000040><tr valign=top><td>
+		<table width=100% height=100% border=0 cellpadding=0 cellspacing=0 bgcolor=#366CAC><tr valign=top><td>
+			<table width=100% border=0 cellpadding=15 cellspacing=0>
+				<tr valign=bottom>
+					<td bgcolor=#ffffff>
+						<font face="Arial, Helvetica, Sans-Serif" size=8 color=#8080A0>
+							<b>3D Mail Effects</b>
+						</font>
+					</td>
+					<td bgcolor=#ffffff align=right>
+						<font face="Arial, Helvetica, Sans-Serif" size=5 color=#8080A0>
+							User documentation: <font color=#900000>Account preferences</font>
+						</font>
+					</td>
+				</tr>
+				<tr valign=top>
+					<td colspan=2 align=center bgcolor=#265c9c>
+					<table><tr><td align=center>
+						<font face="Arial, Helvetica, Sans-Serif" size=2 color=#FFFFFF>
+							<a href="index.html">Introduction</a>
+							| <a href="gui.html">GUI</a>
+							| <a href="context.html">Context menus</a>
+							| <a href="prefs.html">Preferences</a>
+							| <a href="aprefs.html">Account Preferences</a>
+							<hr>
+							<a href="alarms.html">Alarms</a>
+							| <a href="reminders.html">Reminders</a>
+							| <a href="3d.html">The 3D Popup</a>
+							| <a href="skins.html">Skins</a>
+							| <a href="webmail.html">Webmail Scripting</a>
+						</font>
+					</td></tr></table>
+					</td>
+				</tr>
+				<tr valign=top>
+					<td colspan=2 align=center>
+						<table width=600><tr><td>
+							<font face="Arial, Helvetica, Sans-Serif" size=3 color=#FFFFFF>
+<!---------------------------------------------------------------------------------------------------->
+
+The Account Preferences dialog is for configuring each email of your email accounts.
+<p>
+One of the primary features of 3DME is the fact that it stores most of its configuration information
+on a per-account basis. So, rather than configuring a single alarm sound for all new emails, you can
+configure a different sound for each account. This is also true for reminder sounds, 'runs' (programs
+that you want to run when new mail arrives or when a reminder sounds) and so on. There's quite a bit
+to cover, so let's get started by taking a look at what this dialog looks like:
+<p>
+	<center><img src="img/aprefs.gif"></center>
+<p>
+<ul>
+<ul>
+	<li><b>Name</b> -- Enter the name for this account. The name is used when displaying email
+	on the <a href="gui.html">main application window</a>. Choose your name wisely so you can
+	differentiate where each email arrived. For example, if you have an account &quot;paul@home.com&quot;
+	and &quot;fred@home.com&quot; then you might use <i>paul</i> and <i>fred</i>. However,
+	if you have two accounts &quot;paul@company.com&quot; and &quot;paul@home.com&quot;, then you
+	might want to call your accounts <i>company</i> and <i>home</i>.
+	<p>
+	<li><b>Alarm &amp; program settings</b> -- Click this button to edit your <a href="alarms.html">alarm
+	settings</a>. Alarms are ways to let you know that a new mail has just arrived. For example, you
+	may want 3DME to display a <a href="3D.html">3D object</a> or play a sound when new mail arrives.
+	You can also configure 3DME to start your default email client, or run some other program. Note
+	that an alarm happens once per new mail arrival. Note that if you have this option enabled, yet
+	you still do not hear any alarms, you may have them disabled in the <a href="toggles.html">context
+	menu</a>.
+	<p>
+	<li><b>Reminder &amp; program settings</b> -- Click this button to edit your <a href="reminders.html">
+	reminder settings</a>. Reminders are similar to alarms, except that they happen over and over again
+	at a specified interval. For example, you may want 3DME to remind you every 15 minutes that new
+	mail is waiting. A reminder will continue to sound until all the messages for the specified account
+	have been marked as read (or deleted.) Note that if you have this option enabled, yet you still
+	do not hear any reminders, you may have them disabled in the <a href="toggles.html">context menu</a>.
+	<p>
+	<li><b>This is a webmail account</b> -- Select this if the account is accessed via Webmail.
+	See the section titled <a href="webmail.html">Webmail Scripts</a> for more information on what Webmail is and
+	how it works in 3DME.
+	<p>
+	<li><b>Disable this account</b> -- If this option is enabled (with an X mark), this account will
+	not appear in the <a href="gui.html">main application window</a>. It will not be checked for new
+	mail, and it will be disabled in the <a href="toggles.html">context menu</a>. This is handy
+	for accounts that are temporarily out of service or for those accounts you're only interested in
+	monitoring periodically.
+</ul>
+
+	<p>
+	<b>POP3</b>
+	<p>
+
+<ul>
+	Note that these options will only be accessible if the option <u>This is a Webmail account</u> (see above) is
+	<b>not selected</b>.
+	<p>
+	<li><b>POP3 server</b> -- This is where you enter your POP3 mail server. If you don't know
+	what this is, you'll need to contact your ISP (or your email provider) and ask them. Very
+	often (but not always) the mail server is &quot;mail.your_isp.com&quot;. For example, if your
+	network service provider is &quot;foo.com&quot; then you might try &quot;mail.foo.com&quot;. If
+	your ISP is &quot;foo.net&quot;, then try &quot;mail.foo.net&quot;. If this doesn't work, you
+	can try a prefix of &quot;pop&quot; or &quot;pop3&quot;, as in &quot;pop.foo.com&quot; or
+	&quot;pop3.foo.org&quot;. Also, if you use Microsoft Exchange, you can get your information from
+	there by opening up Microsoft Exchange and clicking on the <i>Tools</i> menu, then clicking on
+	<i>accounts</i>, then selecting the <i>Mail</i> tab, and hilighting your account in the list. Next,
+	click <i>properties</i>, click the <i>Servers</i> tab. Finally, your mail server is the value
+	in the field next to <i>Incoming mail (POP3)</i> -- simply enter that information <b>exactly as
+	shown</b> into the <i>Mail server</i> field in 3DME. Please don't email support asking for this
+	information, as we have no way of knowing what your ISP's mail server is.
+	<p>
+	<li><b>Port</b> -- You can usually leave this alone. The default port for POP3 email is 110. If
+	this value needs to change, then there's a good chance you already know about it (i.e. you're
+	an advanced user and you've purposely configured your pop3 server at a non-standard port.)
+	<p>
+	<li><b>Preview <u>???</u> lines of text per email</b> -- When 3DME checks for mail, it can grab
+	a few lines from the top of the email, to allow you to preview it. The default is 5 lines, and
+	may very well be too small for many users. For example, if somebody forwards you an email, very
+	often, you'll see the forward &quot;header&quot; information (where the email came from, the
+	subject, etc.) at the top of the email. With only 5 lines of preview text, you won't get any
+	of the actual email, but rather, you'll see a portion of this forward header. If this happens
+	often, simply increase this value. I tend to use 3DME to read all of my incoming email, so I
+	keep my preview lines set to 999. However, if I get a large email (with an attachment) then it
+	may take a little while to download those lines of text from the server.
+	<p>
+	<li><b>Only check for mail, don't retrieve anything</b> -- Similar to the preview line count, this
+	causes 3DME to only get the list of emails, but not visit them. In effect, this results in much
+	faster email checking, but your email list will not contian any information about the email, only
+	that an email exists in this slot. The date assigned to the email, is the date of notification,
+	not the date of delivery. The <i>subject</i> and <i>from</i> entries in the email list will read
+	&quot;Not retrieved&quot;.
+	<p>
+	<ul>
+		<b>Important note</b>: This also has an important side-effect. For users that are using 3DME to
+		check for mail on their Microsoft Exchange server, this will prevent emails from being marked as
+		'read' when your mail client eventually retrieves the emails from the server.
+		<p>
+		Unfortunately, due
+		to the way that Microsoft Exchange Server works, there is no way to allow 3DME to preview an email
+		(and/or retrieve the email header information) without marking those messages as read on the
+		Exchange server.
+	</ul>
+</ul>
+
+	<p>
+	<b>Webmail</b>
+	<p>
+
+<ul>
+	Note that these options will only be accessible if the option <u>This is a Webmail account</u> (see above) is
+	<b>selected</b>.
+	<p>
+	<li><b>Webmail Script</b> -- Simply select your Webmail host from the list.
+</ul>
+
+	<p>
+	<b>Server settings</b>
+	<p>
+
+<ul>
+	<li><b>Username</b> -- Your email username is almost always the same username that you use
+	when dialing into the internet, or logging on through your ISP. If you use Microsoft Exchange,
+	It can also be found in the same location that your mail server was found.
+	<p>
+	<li><b>Password</b> -- Your email password is almost always the same password that you use
+	when dialing into the internet, or logging on through your ISP. If you use Microsoft Exchange,
+	It can also be found in the same location that your mail server was found, though you won't
+	be able to read it (it will appear as a series of asterisks.)
+	<p>
+	<li><b>Check every <u>???</u> seconds</b> -- How often do you want 3DME to check for email on
+	this account? 3DME will not let you enter a value less than 30 seconds, but there is no limit
+	on the high-end of what this value can be. If you're on a slow dialup connection, it is advisable
+	that you do not set this value too low, or it could potentially use up a lot of your bandwidth.
+	<p>
+	<li><b>Server timeout <u>???</u> seconds</b> -- It's usualy wise to leave this alone, unless
+	you (1) know what you're doing, or (2) encounter a lot of timeout errors when 3DME is checking
+	for email. If this happens, increase the value to 120 or even 300. If you wish to totally remove
+	the timeout, enter 0.
+	<p>
+	<div align=right><a href="prefs.html">Back to preferences...</a></div>
+</ul>
+</ul>
+
+<!---------------------------------------------------------------------------------------------------->
+							</font>
+						</td></tr></table>
+					</td>
+				</tr>
+			</table>
+		</td></tr></table>
+		</td></tr></table>
+	</body>
+</html>
+
+

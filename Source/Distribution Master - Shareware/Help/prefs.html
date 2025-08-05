@@ -1,0 +1,164 @@
+<html>
+	<head>
+		<title>3D Mail Effects</title>
+		<META HTTP-EQUIV="Content-Language" CONTENT="EN">
+		<META NAME="copyright" CONTENT="Copyright 2001, Fluid Studios. All rights reserved.">
+	</head>
+	<body bgcolor=#FFFFFF text=#ffffff vlink=#d0d0ff avlink=#400000 link=#ffff80>
+		<table width=100% height=100% border=0 cellpadding=5 cellspacing=0 bgcolor=#000040><tr valign=top><td>
+		<table width=100% height=100% border=0 cellpadding=0 cellspacing=0 bgcolor=#366CAC><tr valign=top><td>
+			<table width=100% border=0 cellpadding=15 cellspacing=0>
+				<tr valign=bottom>
+					<td bgcolor=#ffffff>
+						<font face="Arial, Helvetica, Sans-Serif" size=8 color=#8080A0>
+							<b>3D Mail Effects</b>
+						</font>
+					</td>
+					<td bgcolor=#ffffff align=right>
+						<font face="Arial, Helvetica, Sans-Serif" size=5 color=#8080A0>
+							User documentation: <font color=#900000>Preferences</font>
+						</font>
+					</td>
+				</tr>
+				<tr valign=top>
+					<td colspan=2 align=center bgcolor=#265c9c>
+					<table><tr><td align=center>
+						<font face="Arial, Helvetica, Sans-Serif" size=2 color=#FFFFFF>
+							<a href="index.html">Introduction</a>
+							| <a href="gui.html">GUI</a>
+							| <a href="context.html">Context menus</a>
+							| <a href="prefs.html">Preferences</a>
+							| <a href="aprefs.html">Account Preferences</a>
+							<hr>
+							<a href="alarms.html">Alarms</a>
+							| <a href="reminders.html">Reminders</a>
+							| <a href="3d.html">The 3D Popup</a>
+							| <a href="skins.html">Skins</a>
+							| <a href="webmail.html">Webmail Scripting</a>
+						</font>
+					</td></tr></table>
+					</td>
+				</tr>
+				<tr valign=top>
+					<td colspan=2 align=center>
+						<table width=600><tr><td>
+							<font face="Arial, Helvetica, Sans-Serif" size=3 color=#FFFFFF>
+<!---------------------------------------------------------------------------------------------------->
+
+This dialog can be accessed from the <a href="context.html">context menu</a> or when you start 3DME
+without any accounts setup (this will happen every time in the shareware version.)
+<p>
+The preferences dialog has two main purposes. First, it allows you to add and maintain your account
+information within 3DME. But it also allows you to setup the way 3DME works on a global scale (i.e.
+settings that affect all accounts.) We'll start with the Email Account Management...
+<p>
+	<center><img src="img/prefs1.gif"></center>
+<p>
+<ul>
+<ul>
+	<li><b>Add</b> -- add an account to the list. Clicking on this button will take you
+	to the <a href="aprefs.html">Account preferences</a> dialog.
+	<p>
+	<li><b>Remove</b> -- remove a selected account from the list. This button will be
+	disabled until an account is selected.
+	<p>
+	<li><b>Edit</b> -- edit the selected account. Clicking on this button will take you
+	to the <a href="aprefs.html">Account preferences</a> dialog (just as <b>Add</b> does,
+	but this time, the account information will be filled in for you.) You may also double-
+	click on an entry in the list to edit it.
+</ul>
+</ul>
+<p>
+	<center><img src="img/prefs2.gif"></center>
+<p>
+<ul>
+<ul>
+	The following options are either enabled (&quot;checked&quot;) or disabled (not-checked).
+	Here is what each of the entries means:
+	<p>
+	<li><b>Automatically run on startup</b> -- 
+	Causes 3DME to insert a reference to itself in registry, which causes it to
+	automatically start when you start Windows.
+	<p>
+	<li><b>Confirm Deletes</b> -- When you select an email (or group of emails) to be deleted,
+	3DME will first ask you if you're sure you want to.
+	<p>
+	<li><b>Show tips on Startup</b> -- When 3DME starts up, it will automatically show you
+	a <i>Tip of the day</i>.
+	You can also access this from the <a href="context.html">context menu</a>.
+	<p>
+	<li><b>Stay on top</b> -- Causes 3DME to remain the top-most window. It will never be hidden
+	behind any other window. 
+	You can also access this from the <a href="context.html">context menu</a>.
+	<p>
+	<li><b>Mark all read when hiding</b> -- If this option is enabled, any emails in the list
+	that are <i>new</i> will automatically be marked as <i>read</i>. This means that the keyboard
+	LEDs (if enabled) will no longer flash, the tray icon will stop flashing, and reminders will
+	no longer sound.
+	<p>
+	<li><b>Close 3D popup on hide</b> -- If this option is enabled, the <a href="3D.html">3D object</a>
+	will be be closed (if it's open) when you hide 3DME.
+	<p>
+	<li><b>Auto-check</b> -- Enable this if you want 3DME to notify you when it checks for
+	updates automatically. This is done by querying the FluidStudios web server for a single
+	TXT file. During the automatic update check, you will see a dialog that explains that
+	3DME is checking for an update. If no update is found, that dialog will automatically go
+	away. If an update is found, it will open a new dialog that shows the revision history for
+	3DME (what has changed in the new update.) This dialog will remain until you close it.
+	The update will happen each time you start 3DME, and then once every 7 days from that
+	point forward.
+	<p>
+	<li><b>Start minimized</b> -- If this option is enabled, 3DME will automatically minimize
+	itself when it starts.
+	<p>
+	<li><b>Log debugging information to TRANSACTION.LOG file</b> -- Normally, you will leave
+	this option disabled. However, when troubleshooting problems (or reporting problems to 
+	<a href="mailto:support@FluidStudios.com">3DME Support</a>), this information can be a great
+	aid. When this option is enabled, all networking transactions (sends &amp; receives) are logged
+	to a file called <i>TRANSACTION.LOG</i> that is located in the 3DME installation directory.
+	If you're troubleshooting a rare problem, it may be advantageous to leave this option enabled
+	until the problem occurs. You can do so without fear of wasting disk space, because the file
+	is truncated (i.e. reset to 0 length) if it reaches a size beyond 4MB. Also note that critical
+	errors will be logged to this file even if this option is disabled.
+	<p>
+	<li><b>Blink the keyboard LEDs</b> -- If this option is enabled, the keyboard LEDs will
+	blink when there are new mails pending. Note that the keyboard LEDs will not flashing if
+	3DME is not the <i>active window</i>, because this would impede your ability to use the keyboard
+	while working in another window. The slider allows you to control the rate of the keyboard
+	blinking.
+	You can also disable this item from the <a href="context.html">context menu</a>.
+	<p>
+	<img src="img/tray.gif" align=right>
+	<li><b>Blink the try icon</b> -- If this option is enabled, 3DME will blink the try icon
+	(see the image below).
+	The slider allows you to control the rate of the tray icon blinking.
+	You can also disable this item from the <a href="context.html">context menu</a>.
+	<p>
+	<p>
+	<li><b>Snap to desktop edges</b> -- Enable this option if you want 3DME to snap
+	to the desktop edges. For example, as you move the 3DME window around the screen,
+	it will <i>snap</i> to the sides &amp; top of the desktop when it gets close to one
+	of the borders. Another way to think about this, is as if 3DME was magnetized to the
+	border of the screen. This feature allows you to place 3DME directly on the edges or
+	in the corner of the desktop with precision. The slider allows you to adjust the sensitivity
+	of the <i>magnet</i>.
+	You can also enable this item from the <a href="context.html">context menu</a>.
+</ul>
+</ul>
+
+Note that these settings are saved, but only when 3DME exits normally. If the system crashes, or
+if you turn the computer off without properly shutting it down (always a bad idea), or if you close
+3DME from the task manager, then 3DME will not save these settings.
+
+<!---------------------------------------------------------------------------------------------------->
+							</font>
+						</td></tr></table>
+					</td>
+				</tr>
+			</table>
+		</td></tr></table>
+		</td></tr></table>
+	</body>
+</html>
+
+

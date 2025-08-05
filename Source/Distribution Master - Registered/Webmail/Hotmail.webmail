@@ -1,0 +1,539 @@
+// ---------------------------------------------------------------------------------------------------------------------------------
+//  _    _       _                   _ _
+// | |  | |     | |                 (_) |
+// | |__| | ___ | |_ _ __ ___   __ _ _| |
+// |  __  |/ _ \| __| '_ ` _ \ / _` | | |
+// | |  | | (_) | |_| | | | | | (_| | | |
+// |_|  |_|\___/ \__|_| |_| |_|\__,_|_|_|
+//
+// Webmail Script for 3D Mail Effects - http://www.FluidStudios.com/3dme/
+//
+// Copyright 2001, Fluid Studios, Inc., all rights reserved.
+//
+// ---------------------------------------------------------------------------------------------------------------------------------
+//
+// Description:
+//
+//   The purpose of this script is to completely handle hotmail transactions, building a list of emails even if the mailbox has
+//   many pages.
+//
+// History:
+//
+//   Originally created on 03/03/2001 by Paul Nettle
+//   Added usage of convertReservedURI to both entry points (5/10/2001)
+//
+// Author:
+//
+//   Paul Nettle (3dme@FluidStudios.com)
+//
+// Notes:
+//
+//   I happen to think that 80-column text went out with DOS, so deal with my phat 132-column script! =)
+//   ...and I use an 8-character tab
+//
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// __retrieve is always where the script execution begins for email retrieval
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+__retrieve:
+
+	// Make the username/password url-safe
+
+	convertReservedURI __user_name
+	convertReservedURI __user_pass
+
+	// Go read the inbox
+
+	Call	login_and_gather_message_urls
+
+	// Now, go create messages with all those URLs we just gathered
+
+	Call	collect_messages
+
+	// Return from this script, back to 3DME
+
+	Return
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// __delete is always where the script execution begins for deleting emails
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+__delete:
+
+	// Make the username/password url-safe
+
+	convertReservedURI __user_name
+	convertReservedURI __user_pass
+
+	// Go read the inbox
+
+	Call	login_and_gather_message_urls
+
+	// Go delete the email (stored in __delete_me)
+
+	Call	do_delete
+
+	// Return from this script, back to 3DME
+
+	Return
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// Login and gather message URLs from all pages in the hotmail inbox
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+login_and_gather_message_urls:
+
+	// Need this created early on (and only once)
+
+	SetVar	message_url_list
+
+	// Start at the hotmail page
+
+	OnError	err_connect
+	GetHTTP	pageData "http://www.hotmail.com/"
+
+	// Seems there's a special value you need here...
+	
+	OnError	__tmp1
+	SetVar	special ""
+	SetVar	sPage pageData
+	Find	sPage "name=\"ct\" value=\""
+	Skip	sPage 17
+	Erase	sPage 0 @sPage
+	Find	sPage "\""
+	Erase	sPage @sPage
+	SetVar	special sPage
+
+	// Get the Hotmail main page (with login information)
+
+__tmp1:
+	OnError	err_connect
+	SetVar	login_url "https://loginnet.passport.com/ppsecure/post.srf"
+	setVar	post_data "login=" __user_name "&domain=hotmail.com&svc=mail&RemoteDAPost=https://login.msnia.passport.com/ppsecure/post.asp&passwd=" __user_pass "&enter=Sign In&sec=share&curmbox=ACTIVE&js=yes&_lang=EN&beta=&ishotmail=1&mspp_shared=1&id=2&fs=1&cb=_lang%3dEN&ct=" special
+	PostHTTP	pageData login_url post_data
+	Call	check_for_meta_refresh
+
+	// Check for invalid user/pass
+
+	Call	check_for_auth_error
+
+	// Find the link to the inbox (where the messages are)
+
+	OnError	err_inbox
+	Find	pageData "/cgi-bin/HoTMaiL"
+	RFind	pageData "<a href=\""
+	Skip	pageData 9
+	Erase	pageData 0 @pageData
+	Find	pageData "\""
+	Erase	pageData @pageData
+	SetVar	page_url pageData
+
+	// Loop through the pages, gathering message URLs
+
+	Call	cycle_message_pages
+	
+	// Done
+
+	Return
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// Delete an email who's message ID is stored in __delete_me
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+do_delete:
+
+	// Go find the url to the message that is to be deleted. It is in the url_message_list.
+
+	OnError	delete_done
+	SetVar	message_url message_url_list
+	Find	message_url __delete_me
+
+	// Erase everything after this url in the list
+
+	Find	message_url "\n"
+	Erase	message_url @message_url
+
+	// Is this the first one in the list?
+
+	OnError	have_url
+	RFind	message_url "\n"
+
+	// Not the first, delete everything before this url in the list
+
+	Skip	message_url 1
+	Erase	message_url 0 @message_url
+
+have_url:
+
+	// Now get the message page so we can get the delete link
+
+	OnError	err_connect
+	GetHTTP	pageData message_url
+
+	// Find the delete link within the message page
+
+	OnError	err_delete
+	SetVar	delete_url pageData
+	Find	delete_url "action=move"
+	RFind	delete_url "<a href=\""
+	Skip	delete_url 9
+	Erase	delete_url 0 @delete_url
+	Find	delete_url "\""
+	Erase	delete_url @delete_url
+
+	// Now, simply visiting this page should delete the email
+
+	OnError	err_connect
+	GetHTTP	pageData delete_url
+
+	// Done
+
+delete_done:
+
+	Return
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// Hotmail paginates their inbox if there are a lot of emails in it. Collect all the messages from all inbox pages.
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+cycle_message_pages:
+
+	// We need to search by page numbers, since we can't just search for a "Next Page" link (due to multilingual Hotmail)
+	// Note the terminating "_" character -- this causes the search for this page number to fail so we don't keep trying
+	// to search further.
+
+	SetVar	pageNumbers "23456789_"
+	
+cycle_message_pages_top:
+
+	// Go get the page
+	
+	OnError	err_connect
+	GetHTTP	pageData page_url
+
+	// Check for invalid user/pass
+
+	Call	check_for_auth_error
+
+	// Find where the messages start on this page
+
+	OnError	cycle_message_pages_end
+	Find	pageData "id=\"MsgTable\""
+
+	// Message loop
+
+	Call	cycle_message_urls
+
+	// Which page number are we on?
+
+	OnError	cycle_message_pages_end
+	SetVar	pageString pageNumbers
+	Erase	pageNumbers 0 1
+	Erase	pageString 1
+	SetVar	pageString "&page=" pageString
+	
+	// Find the link to the next page, if any
+	
+	Find	pageData pageString
+	RFind	pageData "<a href=\""
+	Skip	pageData 9
+	Erase	pageData 0 @pageData
+	Find	pageData "\""
+	Erase	pageData @pageData
+
+	// Put the link into page_url for the next pass through the loop
+
+	SetVar	page_url pageData
+
+	// Next page, please
+
+	Goto	cycle_message_pages_top
+
+cycle_message_pages_end:
+
+	Return
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// Loop through, and gather URLs that point to actual email messages
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+cycle_message_urls:
+
+	// Find the beginning of the table that contains the message page URLs
+
+	OnError	cycle_message_urls_end
+	Find	pageData "<td name=\""
+	Skip	pageData 10
+	Erase	pageData 0 @pageData
+
+	// Find the link to this message page
+
+	Find	pageData "<a href=\""
+	Skip	pageData 9
+	Erase	pageData 0 @pageData
+
+	// Set it aside
+
+	SetVar	tempData pageData
+
+	// Cleanup the pageData (removing the URL)
+
+	Find	pageData "\">"
+	Skip	pageData 2
+	Erase	pageData 0 @pageData
+
+	// Find just the URL within the tempData
+
+	Find	tempData "\">"
+	Erase	tempData @tempData
+
+	// Append this url to the message_url_list with a separator of "\n"
+
+	SetVar	message_url_list message_url_list tempData "\n"
+
+	Goto 	cycle_message_urls
+
+cycle_message_urls_end:
+
+	Return
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// Given a list of message URLs (in message_url_list), go get each message
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+collect_messages:
+
+	// Default these...
+
+	SetVar	msgid
+	SetVar	from "Unknown"
+	SetVar	to
+	SetVar	subject "Unknown"
+	SetVar	date
+	SetVar	body
+	SetVar	attachments
+
+	// Get a single entry from the message_url_list
+
+	OnError	collect_messages_done
+
+	SetVar	message_url message_url_list
+
+	Find	message_url_list "\n"
+	Skip	message_url_list 1
+	Erase	message_url_list 0 @message_url_list
+
+	Find	message_url "\n"
+	Erase	message_url @message_url
+
+	// Parse the message ID (must be unique per email) from the url
+
+	SetVar	msgid message_url
+	Find	msgid "&msg="
+	Skip	msgid 5
+	Erase	msgid 0 @msgid
+	Find	msgid "&"
+	Erase	msgid @msgid
+
+	// If we already know about this message, don't bother getting it
+
+	OnError	get_it
+	Find	__msgid_list "[$]" msgid "[$]"
+
+	// It's in the list, so just add an empty email (so 3DME knows the email is still here) and skip the rest
+
+	AddMail	msgid from to subject date body attachments
+	Goto	collect_messages_next
+
+get_it:
+
+	// Go get message page
+
+	OnError	err_connect
+	GetHTTP	pageData message_url
+	Call	check_for_auth_error
+
+	// If this is a subscriber email, then set the from/subject fields (and there will be no other header information)
+
+	OnError	find_header_info
+	Find	pageData ">Unsubscribe from"
+	SetVar	from "Hotmail Subsciptions"
+	SetVar	subject "Subscription email"
+	Goto	find_message_body
+
+	// It's not one of Hotmail's subscription emails, so get the actual fields
+
+find_header_info:
+
+	// Parse the from field
+
+	OnError	parse_extra_fields
+
+	Find	pageData "id=\"From\""
+	Skip	pageData 9
+	Erase	pageData 0 @pageData
+	
+	Find	pageData "size=2>"
+	Skip	pageData 7
+	Erase	pageData 0 @pageData
+
+	SetVar	from pageData
+
+	Find	pageData "<"
+	Erase	pageData 0 @pageData
+
+	RemTags	from
+	Find	from "<"
+	Erase	from @from
+	UnHTML	from
+
+	// Hotmail may add a Reply-To or other fields to the header, we want the first, and the last three, so we keep reading
+	// any header information available, and if available, we keep shifting the last three down, until we run out.
+
+parse_extra_fields:
+
+	OnError	flag_attachments
+
+	Find	pageData "class=\"f\" size=2"
+	Skip	pageData 9
+	Erase	pageData 0 @pageData
+	
+	Find	pageData "size=2>"
+	Skip	pageData 7
+	Erase	pageData 0 @pageData
+
+	// Shift!
+	
+	SetVar	to subject
+	SetVar	subject date
+
+	// Read the date	
+
+	SetVar	date pageData
+
+	Find	pageData "<"
+	Erase	pageData 0 @pageData
+
+	RemTags	date
+	Find	date "<"
+	Erase	date @date
+	UnHTML	date
+	Goto	parse_extra_fields
+
+flag_attachments:
+
+	OnError	find_message_body
+	Find	pageData "&mimepart="
+	SetVar	attachments "true"
+
+find_message_body:
+
+	// The message body
+
+	OnError	add_mail
+	Find	pageData "class='wf'"
+	Find	pageData "<td>"
+	Skip	pageData 5
+	Erase	pageData 0 @pageData
+	SetVar	body pageData
+	Find	body "name=\"move2\""
+	RFind	body "</td>"
+	Erase	body @body
+
+add_mail:
+
+	// Okay, everything parsed okay, add the email info
+
+	AddMail	msgid from to subject date body attachments
+
+	// Next email
+
+collect_messages_next:
+
+	Goto	collect_messages
+
+	// We're all done
+
+collect_messages_done:
+
+	Return
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// Refresh?
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+check_for_meta_refresh:
+
+	// Try: "refresh"
+
+	OnError	try_other_form
+	Find	pageData "http-equiv=\"refresh\""
+	Goto	do_refresh
+	
+	// Try: refresh
+
+try_other_form:
+	OnError	refresh_ok
+	Find	pageData "http-equiv=refresh"
+	
+do_refresh:
+	Find	pageData "url="
+	Skip	pageData 4
+	Erase	pageData 0 @pageData
+	Find	pageData "\""
+	Erase	pageData @pageData
+	SetVar	refresh_url pageData
+	
+	// Refresh
+	
+load_refresh_page:
+	OnError	err_connect
+	GetHTTP	pageData refresh_url
+	Call	check_for_auth_error
+	
+	// Recursive refresh pages?
+	
+	Goto	check_for_meta_refresh
+
+refresh_ok:
+	Return
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// See if this is a page asking for our user/pass
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+check_for_auth_error:
+
+	OnError	auth_okay
+	Find	pageData "FILE: login.asp"
+	Error	"Check your username/password"
+
+auth_okay:
+	Return
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// Errors
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+message_parse_error:
+	Error	"Unable to parse the HTML returned by Hotmail"
+
+message_link_error:
+	Error	"Unable to locate message link start/end"
+
+err_connect:
+	Error	"Unable to connect to Hotmail"
+
+err_delete:
+	Error	"Error trying to delete email"
+
+err_inbox:
+	Error	"Unable to locate inbox"
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// End
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+

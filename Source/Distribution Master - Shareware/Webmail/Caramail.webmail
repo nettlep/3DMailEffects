@@ -1,0 +1,479 @@
+// ---------------------------------------------------------------------------------------------------------------------------------
+//
+//                                 CARAMAIL WebMail Script by Raphael Rigo
+//
+// Webmail Script for 3D Mail Effects - http://www.FluidStudios.com/3dme/
+// Copyright 2001, Fluid Studios, Inc., all rights reserved.
+//
+// This script has been written by Raphael Rigo
+// You can contact me: rrigo@caramail.com
+//
+// ---------------------------------------------------------------------------------------------------------------------------------
+//
+// Description:
+//
+//   The purpose of this script is to completely handle Caramail transactions, building a list of emails even if the mailbox has
+//   many pages.
+//
+// History:
+//
+//   Originally created on 04/04/2001 by Raphael Rigo
+//   Fixed on 04/05/2001 to handle password > 8 chars because Caramail truncate them.
+//   Added usage of convertReservedURI to both entry points (5/10/2001)
+//   Modified to support new Caramail interface (8/25/2001)
+//   Remodified to handle pass lenght perfectly (thks to the author...) (8/26/2001).
+//   Modified to support new URL (caramail.lycos.fr) (12/30/2001)
+//
+// Author:
+//
+//   Raphael Rigo (rrigo@caramail.com)
+//
+// Notes:
+//
+//   Thanks to Fluid Studios for their program and their Hotmail script which was used as a base for this one...
+//
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// __retrieve is always where the script execution begins for email retrieval
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+__retrieve:
+
+	// Make the username/password url-safe
+
+	convertReservedURI __user_name
+	convertReservedURI __user_pass
+
+	// Go read the inbox
+
+	Call	login_and_gather_message_urls
+	
+	// Now, go create messages with all those URLs we just gathered
+
+	Call	collect_messages
+
+	// Return from this script, back to 3DME
+
+	Return
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// __delete is always where the script execution begins for deleting emails
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+__delete:
+
+	// Make the username/password url-safe
+
+	convertReservedURI __user_name
+	convertReservedURI __user_pass
+
+	OnError	err_connect
+	
+	// logins
+	
+	GetHTTP	pageData "http://www.caramail.com/"
+
+	Find 	pageData "SRC=\""
+	Skip 	pageData 5
+	Erase 	pageData 0 @pageData
+	Find 	pageData "lycos.fr/"
+	Skip 	pageData 9
+	Erase   pageData @pageData
+	
+	SetVar begin_url pageData
+	
+	SetVar password __user_pass "_"
+	Skip   password -9999
+	Skip   password 8
+	Erase  password @password
+	
+	SetVar login_url pageData "scripts/baltop?LOGIN1=" __user_name "&PASSWORD1=" password
+	
+	GetHTTP pageData login_url
+	
+	// Check for invalid user/pass
+
+	Call	check_for_auth_error
+		
+	// Go delete the email (stored in __delete_me)
+
+	Call	do_delete
+
+	// Return from this script, back to 3DME
+
+	Return
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// Login and gather message URLs from all pages in the Caramail inbox
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+login_and_gather_message_urls:
+
+	// Need this created early on (and only once)
+
+	SetVar	message_url_list
+
+	// Get the Caramail main page (with login information)
+
+	OnError	err_connect
+	GetHTTP	pageData "http://www.caramail.com/"
+
+	Find 	pageData "SRC=\""
+	Skip 	pageData 5
+	Erase 	pageData 0 @pageData
+	Find 	pageData "lycos.fr/"
+	Skip 	pageData 9
+	Erase   pageData @pageData
+	
+	SetVar begin_url pageData
+
+	SetVar password __user_pass "_"
+	Skip   password -9999
+	Skip   password 8
+	Erase  password @password
+	
+	SetVar login_url pageData "scripts/baltop?LOGIN1=" __user_name "&PASSWORD1=" password
+	
+	GetHTTP pageData login_url
+	
+	// Check for invalid user/pass
+
+	Call	check_for_auth_error
+
+	// Find the link to the inbox (where the messages are)
+
+	OnError	err_inbox
+	SetVar 	page_url begin_url "cgi-bin/contenu?FOLDER=1"
+
+	// Loop through the pages, gathering message URLs
+
+	Call	cycle_message_pages
+	
+	// Done
+
+	Return
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// Delete an email who's message ID is stored in __delete_me ActionMail?FOLDER=1&CHECK_16777757=1&EFFACER=1
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+do_delete:
+
+	// Go find the url to the message that is to be deleted. It is in the url_message_list.
+
+	OnError	delete_done
+	
+	SetVar  delete_url begin_url "cgi-bin/ActionMail?FOLDER=1&CHECK_" __delete_me "=1&EFFACER=1"
+	
+	GetHTTP	pageData delete_url
+
+	// Done
+
+delete_done:
+
+	Return
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// Caramail paginates their inbox if there are a lot of emails in it. Collect all the messages from all inbox pages.
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+cycle_message_pages:
+
+	// Go get the page
+
+	OnError	err_connect
+	GetHTTP	pageData page_url
+
+	// Find where the messages start on this page
+
+	OnError	cycle_message_pages_end
+	Find	pageData "<A HREF=\"/cgi-bin/Affich"
+
+	// Message loop
+
+	Call	cycle_message_urls
+
+	// Find the link to the next page, if any
+
+	Find	pageData "page suivante"
+	RFind	pageData "<A HREF=\""
+	Skip	pageData 9
+	Erase	pageData 0 @pageData
+	Find	pageData "\">page"
+	Erase	pageData @pageData
+
+	// Put the link into page_url for the next pass through the loop
+
+	SetVar	page_url pageData
+
+	// Next page, please
+
+	Goto	cycle_message_pages
+
+cycle_message_pages_end:
+
+	Return
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// Loop through, and gather URLs that point to actual email messages
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+cycle_message_urls:
+
+	// Find the beginning of the table that contains the message page URLs
+
+	OnError	cycle_message_urls_end
+
+	// Find the link to this message page
+
+	Find	pageData "Body?IDMAIL="
+	Skip 	pageData 12
+	Erase	pageData 0 @pageData
+		
+	// Set it aside
+
+	SetVar	tempData pageData
+
+	// Cleanup the pageData (removing the URL)
+
+	Find	pageData "\">"
+	Erase	pageData 0 @pageData
+
+	// Find just the URL within the tempData
+
+	Find	tempData "\">"
+	Erase	tempData @tempData
+
+	// Append this url to the message_url_list with a separator of "\n"
+
+	SetVar	message_url_list message_url_list begin_url "cgi-bin/AfficheBody?IDMAIL=" tempData "\n"
+
+	Goto 	cycle_message_urls
+
+cycle_message_urls_end:
+
+	Return
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// Given a list of message URLs (in message_url_list), go get each message
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+collect_messages:
+
+	// Default these...
+
+	SetVar	msgid
+	SetVar	from "Unknown"
+	SetVar	to
+	SetVar	subject "Unknown"
+	SetVar	date
+	SetVar	body
+	SetVar	attachments
+
+	// Get a single entry from the message_url_list
+
+	OnError	collect_messages_done
+
+	SetVar	message_url message_url_list
+
+	Find	message_url_list "\n"
+	Skip	message_url_list 1
+	Erase	message_url_list 0 @message_url_list
+
+	Find	message_url "\n"
+	Erase	message_url @message_url
+
+	// Parse the message ID (must be unique per email) from the url
+
+	SetVar	msgid message_url
+	Find	msgid "?IDMAIL="
+	Skip	msgid 8
+	Erase	msgid 0 @msgid
+
+	//	Find	msgid "?"
+	//  Erase	msgid @msgid
+
+	// If we already know about this message, don't bother getting it
+
+	OnError	get_it
+	
+	Find	__msgid_list "[$]" msgid "[$]"
+
+	// It's in the list, so just add an empty email (so 3DME knows the email is still here) and skip the rest
+
+	AddMail	msgid from to subject date body attachments
+	Goto	collect_messages_next
+
+get_it:
+
+	// Go get message page
+
+	OnError	err_connect
+	GetHTTP	pageData message_url
+
+	// Get the from header
+
+	OnError	parse_subject
+
+	Find	pageData "De: </TD>"
+	Skip	pageData 9
+	Erase	pageData 0 @pageData
+	Find	pageData "<TD>"
+	Skip	pageData 4
+	Erase	pageData 0 @pageData
+	
+	// Parse the from field
+
+	SetVar	from pageData
+	Find	from "</TD>"
+	Erase	from @from
+
+	UnHTML  from
+
+	Find	pageData "</A>"
+	Erase	pageData 0 @pageData
+
+parse_subject:
+	// Parse the subject field
+
+	OnError	parse_to
+
+	Find	pageData "Sujet:"
+	Skip	pageData 6
+	Erase	pageData 0 @pageData
+	
+	Find	pageData "ght>"
+	Skip	pageData 5
+	Erase	pageData 0 @pageData
+	
+	SetVar	subject pageData
+
+	Find	pageData "</TD>"
+	Erase	pageData 0 @pageData
+
+	Find 	subject "</TD>
+	Skip    subject -1
+	Erase	subject @subject
+	UnHTML	subject
+	
+parse_to:
+
+	// Parse the to field
+
+	OnError	parse_date
+
+	Find	pageData "A: "
+	Erase	pageData 0 @pageData
+	
+	Find	pageData "ght>"
+	Skip	pageData 5
+	Erase	pageData 0 @pageData
+
+	SetVar	to pageData
+
+	Find	pageData "<"
+	Erase	pageData 0 @pageData
+	
+	
+	Find 	to "</A>"
+	Erase	to @to
+	UnHTML	to
+
+parse_date:
+
+	// Parse the date field
+
+	OnError	find_message_body
+
+	Find	pageData "Date: "
+	Skip	pageData 4
+	Erase	pageData 0 @pageData
+	
+	Find	pageData "ght>"
+	Skip	pageData 4
+	Erase	pageData 0 @pageData
+
+	SetVar	date pageData
+
+	Find	pageData "<"
+	Erase	pageData 0 @pageData
+
+	Find	date "<"
+	Erase	date @date
+	UnHTML	date
+
+find_message_body:
+
+	// The message body
+
+	OnError	collect_messages_next
+
+	Find	pageData "<P>"
+	Skip	pageData 3
+	Erase	pageData 0 @pageData
+	SetVar	body pageData
+	Find	body "<BR><TABLE CELLSPACING=0"
+	Erase	body @body
+
+flag_attachments:
+
+	OnError	add_mail
+	Find	body "/cgi-bin/downloader?"
+	SetVar	attachments "1"
+
+add_mail:
+
+	// Okay, everything parsed okay, add the email info
+
+	AddMail	msgid from to subject date body attachments
+
+	// Next email
+
+collect_messages_next:
+
+	Goto	collect_messages
+
+	// We're all done
+
+collect_messages_done:
+
+	Return
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// See if this is a page asking for our user/pass
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+check_for_auth_error:
+
+	OnError	auth_okay
+	Find	pageData "Mauvais login"
+	Error	"Check your username/password (pass longer than 8 chars must be enter with 8 first chars only)"
+
+auth_okay:
+	Return
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// Errors
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+message_parse_error:
+	Error	"Unable to parse the HTML returned by Caramail"
+
+message_link_error:
+	Error	"Unable to locate message link start/end"
+
+err_connect:
+	Error	"Unable to connect to Caramail"
+
+err_delete:
+	Error	"Error trying to delete email"
+
+err_inbox:
+	Error	"Unable to locate inbox"
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// End
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+

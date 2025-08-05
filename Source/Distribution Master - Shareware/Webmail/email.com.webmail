@@ -1,0 +1,536 @@
+// ---------------------------------------------------------------------------------------------------------------------------------
+//                       _ _                        
+//                      (_) |                       
+//   ___ _ __ ___   __ _ _| |   ___  ___  _ __ ___  
+//  / _ \ '_ ` _ \ / _` | | |  / __|/ _ \| '_ ` _ \ 
+// |  __/ | | | | | (_| | | |_| (__| (_) | | | | | |
+//  \___|_| |_| |_|\__,_|_|_(_)\___|\___/|_| |_| |_|
+//
+// Webmail Script for 3D Mail Effects - http://www.FluidStudios.com/3dme/
+//
+// Copyright 2001, Fluid Studios, Inc., all rights reserved.
+//
+// ---------------------------------------------------------------------------------------------------------------------------------
+//
+// Description:
+//
+//   The purpose of this script is to completely handle email.com transactions, building a list of emails even if the mailbox has
+//   many pages.
+//
+// History:
+//
+//   Originally created on 03/03/2001 by Paul Nettle
+//
+// Author:
+//
+//   Paul Nettle (3dme@FluidStudios.com)
+//
+// Notes:
+//
+//   I happen to think that 80-column text went out with DOS, so deal with my phat 132-column script! =)
+//   ...and I use an 8-character tab
+//
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// __retrieve is always where the script execution begins for email retrieval
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+__retrieve:
+
+	// For now, 3DME doesn't support the requirements of email.com...
+
+	Error	"Sorry, Email.com is no longer supported"
+	
+	// Make the username/password url-safe
+
+	convertReservedURI __user_name
+	convertReservedURI __user_pass
+
+	// Go read the inbox
+
+	Call	login
+
+	// Now, go create messages with all those URLs we just gathered
+
+	Call	collect_messages
+
+	// Return from this script, back to 3DME
+
+	Return
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// __delete is always where the script execution begins for deleting emails
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+__delete:
+	// It seems that email.com requires POST, instead of GET for deletes. For now, 3DME doesn't support that. :(
+
+	Error	"Deleting from email.com not supported"
+	
+	// Make the username/password url-safe
+
+	convertReservedURI __user_name
+	convertReservedURI __user_pass
+
+	// Go read the inbox
+
+	Call	login
+
+	// Now, go create messages with all those URLs we just gathered
+
+	Call	find_message_for_delete
+
+	// Return from this script, back to 3DME
+
+	Return
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// Login and gather message URLs from all pages in the email.com inbox
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+login:
+
+	// Need this created early on (and only once)
+
+	SetVar	message_url_list
+
+	// Get the email.com main page (with login information)
+
+	OnError	err_connect
+	GetHTTP	pageData "http://www.email.com/"
+
+	// Find the login form...
+
+	OnError	err_login
+	Find	pageData "name=\"loginform"
+	RFind	pageData "action=\""
+	Skip	pageData 8
+	Erase	pageData 0 @pageData
+
+	// Copy over the login URL
+
+	SetVar	login_url pageData
+	Find	login_url "\""
+	Erase	login_url @login_url
+
+	// Add the username/password to the URL
+
+	SetVar	login_url login_url "?login=" __user_name "&password=" __user_pass "&action=login&show_frame=Enter&domain=email.com&mail_language=us_noframe"
+
+	// Now go to the inbox...
+
+	OnError	err_connect
+	GetHTTP	pageData login_url
+	Call	check_for_auth
+
+	// We're still not actually at the inbox just yet... but we're getting close!
+
+	OnError	err_login
+	Find	pageData "URL="
+	Skip	pageData 4
+	Erase	pageData 0 @pageData
+	Find	pageData "\""
+	Erase	pageData @pageData
+	SetVar	inframe_url pageData
+
+	// Get the frame with our inbox link
+
+	OnError	err_connect
+	GetHTTP	pageData inframe_url
+	Call	check_for_auth
+
+find_inbox_link:
+
+	// Find the inbox link
+	
+	Find	pageData ">inbox<"
+	RFind	pageData "href=\""
+	Skip	pageData 6
+	Erase	pageData 0 @pageData
+	Find	pageData "\""
+	Erase	pageData @pageData
+	SetVar	inbox_url pageData
+
+	// Load up the actual inbox!
+
+	OnError	err_connect
+	GetHTTP	pageData inbox_url
+	SetVar	originalPage pageData
+	Call	check_for_auth
+
+login_done:
+
+	// Done
+
+	Return
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// Go read the messages in the current page (and read multiple pages if necessary)
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+collect_messages:
+
+	// Clear these
+
+	SetVar	msgid
+	SetVar	field_from
+	SetVar	field_to
+	SetVar	field_subj
+	SetVar	field_date
+	SetVar	body
+	SetVar	attach
+
+	// The message URL
+
+	OnError	collect_messages_next_page
+	Find	pageData "mesg.mail"
+	RFind	pageData "http://"
+	Erase	pageData 0 @pageData
+	Find	pageData "'"
+	SetVar	message_url pageData
+	Erase	message_url @pageData
+	Erase	pageData 0 @pageData
+
+	// The message ID (found in the message's URL)
+
+	SetVar	msgid message_url
+	Find	msgid "msg_uid="
+	Skip	msgid 8
+	Erase	msgid 0 @msgid
+
+	// Do we need to bother visiting this URL?
+
+	OnError	read_message
+	SetVar	body
+	Find	__msgid_list "[$]" msgid "[$]"
+
+	// Our message ID was in the list, don't bother reading it again
+
+	Goto	collect_messages_next
+
+read_message:
+
+	// Go read the body of this email
+
+	Call	do_read_message
+
+collect_messages_next:
+
+	// Add this email
+
+	AddMail	msgid field_from field_to field_subj field_date body attach
+
+	// Next message, please
+
+	Goto	collect_messages
+
+collect_messages_next_page:
+
+	// Is there a 'next' link? We get this from the original page data, since the next link is at the top
+
+	OnError	collect_messages_done
+	SetVar	pageData originalPage
+	Find	pageData "[Next"
+
+	// Yes, strip out the URL
+
+	RFind	pageData "<a href=\""
+	Skip	pageData 9
+	Erase	pageData 0 @pageData
+	Find	pageData "\""
+	Erase	pageData @pageData
+	SetVar	page_url pageData
+	
+	// This is a strange thing they do.... (obviously, to make it easier for them to write their CGI code)
+	
+	OnError	collext_messages_get_next_page
+	Find	page_url "(ib_"
+	Goto	collect_messages_done
+
+collext_messages_get_next_page:
+
+	// Get the next page
+	
+	OnError	err_connect
+	GetHTTP	pageData page_url
+	SetVar	originalPage pageData
+	Call	check_for_auth
+
+	// Keep collecting messages
+
+	Goto	collect_messages
+
+collect_messages_done:
+
+	// Done
+	
+	Return
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// Go read a message from the variable message_url
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+do_read_message:
+
+	// Load up the actual message
+
+	OnError	err_connect
+	GetHTTP	messagePageData message_url
+	Call	check_for_auth
+
+	// The header information in the message page is more descriptive, we'll use that if we can find it
+
+check_for_from:
+	OnError	check_for_subj
+	Find	messagePageData ">From:"
+	Find	messagePageData "<font"
+	Find	messagePageData ">"
+	Skip	messagePageData 1
+	SetVar	field_from messagePageData
+	Erase	field_from 0 @messagePageData
+	Skip	messagePageData -999999
+	Find	field_from "</"
+	Erase	field_from @field_from
+	Strip	field_from
+	RemTags	field_from
+	UnHTML	field_from
+	Strip	field_from
+	Find	field_from "<font"
+	Erase	field_from @field_from
+	Strip	field_from
+
+check_for_subj:
+	OnError	check_for_date
+	Find	messagePageData ">Subject:"
+	Find	messagePageData "<font"
+	Find	messagePageData ">"
+	Skip	messagePageData 1
+	SetVar	field_subj messagePageData
+	Erase	field_subj  0 @messagePageData
+	Skip	messagePageData -999999
+	Find	field_subj "</"
+	Erase	field_subj @field_subj
+	Strip	field_subj
+	RemTags	field_subj
+	UnHTML	field_subj
+	Strip	field_subj
+	Find	field_subj "</font"
+	Erase	field_subj @field_subj
+	Strip	field_subj
+
+check_for_date:
+	OnError	check_for_to
+	Find	messagePageData ">Date:"
+	Find	messagePageData "<font"
+	Find	messagePageData ">"
+	Skip	messagePageData 1
+	SetVar	field_date messagePageData
+	Erase	field_date 0 @messagePageData
+	Skip	messagePageData -999999
+	Find	field_date "</"
+	Erase	field_date @field_date
+	Strip	field_date
+	RemTags	field_date
+	UnHTML	field_date
+	Strip	field_date
+	Find	field_date "</font"
+	Erase	field_date @field_date
+	Strip	field_date
+	
+check_for_to:
+	OnError	find_body
+	Find	messagePageData ";To:<"
+	Find	messagePageData "a href=\""
+	Find	messagePageData ">"
+	Skip	messagePageData 1
+	SetVar	field_to messagePageData
+	Erase	field_to 0 @messagePageData
+	Skip	messagePageData -999999
+	Find	field_to "</a>"
+	Erase	field_to @field_to
+	Strip	field_to
+	RemTags	field_to
+	UnHTML	field_to
+	Strip	field_to
+	Find	field_to "</font"
+	Erase	field_to @field_to
+	Strip	field_to
+	
+find_body:
+	SetVar	savedPage messagePageData
+	OnError	check_for_attach
+	SetVar	body "This message was incomplete from the server."
+	Find	messagePageData ">close<"
+	Find	messagePageData "<td"
+	Find	messagePageData "<td"
+	Find	messagePageData ">"
+	Skip	messagePageData 1
+	SetVar	savedPage messagePageData
+	Erase	savedPage @messagePageData
+	Erase	messagePageData 0 @messagePageData
+	Find	messagePageData "</td></tr></table></td></tr>"
+	Erase	messagePageData @messagePageData
+	SetVar	body messagePageData
+	Strip	body
+
+check_for_attach:
+	OnError	after_attach
+	Skip	body -999999
+	Find	body "getattch.mail?retrieve=yes"
+	SetVar	attach "1"
+
+after_attach:
+	// Done!
+
+	Return
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// Go find the messages in the current page (and read multiple pages if necessary)
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+find_message_for_delete:
+
+	// The message URL
+
+	OnError	find_message_for_delete_next_page
+	SetVar	msg_url pageData
+	Find	msg_url "msg_uid=" __delete_me
+	RFind	msg_url "a href=\""
+	Skip	msg_url 8
+	Erase	msg_url 0 @msg_url
+	Find	msg_url "\""
+	Erase	msg_url @msg_url
+
+	// We found it, load up the message page
+	
+	OnError	err_connect
+	GetHTTP	pageData msg_url
+	Call	check_for_auth
+	
+	// Delete it
+
+	Call	do_delete_message
+
+	// We're done
+
+	Return
+
+find_message_for_delete_next_page:
+
+	// Is there a 'next' link? We get this from the original page data, since the next link is at the top
+
+	OnError	find_message_for_delete_not_found
+	SetVar	pageData originalPage
+	Find	pageData "[Next"
+
+	// Yes, strip out the URL
+
+	RFind	pageData "<a href=\""
+	Skip	pageData 9
+	Erase	pageData 0 @pageData
+	Find	pageData "\""
+	Erase	pageData @pageData
+	SetVar	page_url pageData
+	
+	// This is a strange thing they do.... (obviously, to make it easier for them to write their CGI code)
+	
+	OnError	find_message_for_delete_get_next_page
+	Find	page_url "(ib_"
+	Goto	find_message_for_delete_not_found
+
+find_message_for_delete_get_next_page:
+	
+	// Get the next page
+
+	OnError	err_connect
+	GetHTTP	pageData page_url
+	SetVar	originalPage pageData
+	Call	check_for_auth
+
+	// Keep collecting messages
+
+	Goto	find_message_for_delete
+
+find_message_for_delete_not_found:
+
+	// We never found it!
+
+	Error	"Unable to delete, message not found"
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// Go read a message from the variable message_url, then find its delete link, and follow that
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+do_delete_message:
+
+	// Find the delete information
+	
+	OnError	err_delete
+	Find	pageData "name=\"msg_no_next\""
+	Find	pageData "value=\""
+	Skip	pageData 7
+	Erase	pageData 0 @pageData
+	SetVar	msgnonext pageData
+	Find	msgnonext "\""
+	Erase	msgnonext @msgnonext
+	
+	Find	pageData "name=\"message_no\""
+	Find	pageData "value=\""
+	Skip	pageData 7
+	Erase	pageData 0 @pageData
+	SetVar	msgno pageData
+	Find	msgno "\""
+	Erase	msgno @msgno
+
+	// Build a delete link
+	
+	SetVar	delete_url "http://mymail.email.com/scripts/mail/Outblaze.mail?login=" __user_name "&sel_" __delete_me "=ON&msg_no_next=" msgnonext "&current_folder=INBOX&message_no=" msgno "&ispopupmultiple=0&delete_read=Delete"
+
+	// Delete it
+
+	OnError	err_connect
+	GetHTTP	messagePageData delete_url
+	Call	check_for_auth
+
+	// Okay, the message should be deleted
+
+	Return
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// Make sure they're not asking for our password
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+check_for_auth:
+
+	OnError	auth_ok
+	Find	pageData "Sign In to E-mail"
+	Goto	err_pass
+
+auth_ok:
+	Return
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// Errors
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+err_connect:
+	Error	"Unable to connect to email.com"
+
+err_delete:
+	Error	"Error trying to delete email"
+
+err_login:
+	Error	"Error trying to login to email.com"
+
+err_message:
+	Error	"Error trying to read message!"
+
+err_pass:
+	Error	"Verify your login/password!"
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// End
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+

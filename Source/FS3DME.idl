@@ -1,0 +1,37 @@
+// 3Dme.idl : IDL source for 3Dme
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (3Dme.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	object,
+	uuid(6BC3B537-275C-4DFE-9733-A8A2A2A3851A),
+	dual,
+	nonextensible,
+	helpstring("IScriptSkin Interface"),
+	pointer_default(unique)
+]
+interface IScriptSkin : IDispatch{
+	[id(1), helpstring("method TestCallback")] HRESULT TestCallback([in] BSTR str);
+};
+[
+	uuid(248741A8-804C-4041-8E72-1492FA0D79C3),
+	version(1.0),
+	helpstring("3Dme 1.0 Type Library")
+]
+library FS3DMELib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(621AC0AB-A52C-4B11-AD5A-654371035877),
+		helpstring("ScriptSkin Class")
+	]
+	coclass ScriptSkin
+	{
+		[default] interface IScriptSkin;
+	};
+};

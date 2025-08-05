@@ -1,0 +1,132 @@
+<HTML>
+<BODY>
+<PRE>
+<!-- Manpage converted by man2html 3.0.1 -->
+
+</PRE>
+<H2>NAME</H2><PRE>
+     curl_formparse  - add a section to a multipart/formdata HTTP
+     POST: deprecated (use curl_formadd instead)
+
+
+</PRE>
+<H2>SYNOPSIS</H2><PRE>
+     <B>#include</B> <B>&lt;curl/curl.h&gt;</B>
+
+     <B>CURLcode</B> <B>curl_formparse(char</B> <B>*</B> <I>string,</I>  <B>struct</B>  <B>HttpPost</B>  <B>**</B>
+     <I>firstitem,</I> <B>struct</B> <B>HttpPost</B> <B>**</B> <I>lastitem</I><B>);</B>
+
+
+</PRE>
+<H2>DESCRIPTION</H2><PRE>
+     curl_formparse()  is used to append sections when building a
+     multipart/formdata  HTTP  POST  (sometimes  refered  to   as
+     rfc1867-style  posts).  Append  one  section at a time until
+     you've added all the sections you want included and then you
+     pass the <I>firstitem</I> pointer as parameter to <B>CURLOPT_HTTPPOST</B>.
+     <I>lastitem</I> is set after each call and on repeated  invokes  it
+     should  be left as set to allow repeated invokes to find the
+     end of the list in a faster way.  <I>string</I> must be a zero ter­
+     minated  string abiding to the syntax described in a section
+     below
+
+     The pointers <I>*firstitem</I> and <I>*lastitem</I> should both be  point­
+     ing  to  NULL  in the first call to this function. All list-
+     data will be allocated by the function itself. You must call
+     <I>curl</I><B>_</B><I>formfree</I>  after the form post has been done to free the
+     resources again.
+
+     This function will copy all input data and keep its own ver­
+     sion  of  it  allocated  until  you call <I>curl</I><B>_</B><I>formfree</I>. When
+     you've passed the pointer to <I>curl</I><B>_</B><I>easy</I><B>_</B><I>setopt</I>, you must  not
+     free  the  list  until after you've called <I>curl</I><B>_</B><I>easy</I><B>_</B><I>cleanup</I>
+     for the curl handle.
+
+     See example below.
+
+
+</PRE>
+<H2>FORM PARSE STRINGS</H2><PRE>
+     The <I>string</I> parameter must be using one of the following pat­
+     terns.  Note  that  the [] letters should not be included in
+     the real-life string.
+
+     <B>[name]=[contents]</B>
+             Add a form field  named  'name'  with  the  contents
+             'contents'. This is the typcial contents of the HTML
+             tag &lt;input type=text&gt;.
+
+     <B>[name]=@[filename]</B>
+             Add a form field named 'name' with the  contents  as
+             read  from  the local file named 'filename'. This is
+             the  typcial  contents  of  the  HTML   tag   &lt;input
+             type=file&gt;.
+
+     <B>[name]=@[filename1,filename2,...]</B>
+             Add  a  form field named 'name' with the contents as
+             read from the  local  files  named  'filename1'  and
+             'filename2'.  This is identical to the upper, except
+             that you get the contents of several  files  in  one
+             section.
+
+     <B>[name]=@[filename];[type=&lt;content-type&gt;]</B>
+             Whenever  you  specify  a file to read from, you can
+             optionally specify the  content-type  as  well.  The
+             content-type  is  passed to the server together with
+             the contents  of  the  file.  curl_formparse()  will
+             guess content-type for a number of well-known exten­
+             sions and otherwise it will set it  to  binary.  You
+             can  override  the  internal  decision by using this
+             option.
+
+     <B>[name]=@[filename1,filename2,...];[type=&lt;content-type&gt;]</B>
+             When you specify several files to read the  contents
+             from,  you  can set the content-type for all of them
+             in the same way as with a single file.
+
+
+</PRE>
+<H2>RETURN VALUE</H2><PRE>
+     Returns non-zero if an error occurs.
+
+
+</PRE>
+<H2>EXAMPLE</H2><PRE>
+      HttpPost* post = NULL;
+      HttpPost* last = NULL;
+
+      /* Add an image section */
+      curl_formparse("picture=@my-face.jpg", &amp;post, &amp;last);
+      /* Add a normal text section */
+      curl_formparse("name=FooBar", &amp;post, &amp;last);
+      /* Set the form info */
+      curl_easy_setopt(curl, CURLOPT_HTTPPOST, post);
+
+
+
+</PRE>
+<H2>SEE ALSO</H2><PRE>
+     <B>curl_easy_setopt(3)</B>, <B>curl_formadd(3)</B>, <B>curl_formfree(3)</B>
+
+
+</PRE>
+<H2>BUGS</H2><PRE>
+     Surely there are some, you tell me!
+
+
+
+
+
+
+
+
+
+
+</PRE>
+<HR>
+<ADDRESS>
+Man(1) output converted with
+<a href="http://www.oac.uci.edu/indiv/ehood/man2html.html">man2html</a>
+</ADDRESS>
+</BODY>
+</HTML>

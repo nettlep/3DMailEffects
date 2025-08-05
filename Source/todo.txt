@@ -1,0 +1,76 @@
+3DME PRO:
+
+   Set models & materials in the globals, but then allow accounts to override
+   DisableAutodial - do like netrqx
+   Add ScriptNotice to the new preferences
+   Creating new accounts (in email settings)
+   Deleting accounts (in email settings)
+   PDNDEBUG - locate all and replace with real code
+   Shareware message at startup
+   Shareware: no save settings
+   
+   Remove from project:
+      AccountList.*
+      AppPrefs.*
+      EggDlg.*
+      EmailList.*
+      EmailListbox.*
+      WebMail.*
+
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+HELP:
+-----------------------------------------------------------------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------------------------------------------------------------
+TODO:
+-----------------------------------------------------------------------------------------------------------------------------------
+
+Add option to automatically delete all emails that contain executables
+New Help system
+Rewrite the POP3/Networking/MIME code for performance
+Do not store emails in RAM, store them in a mailbox file
+Super-tool-tips (like Trillian)
+Only read headers from pop3 server, read entire email when they preview it (optional)
+Use mutex for determining if 3DME is running
+DSPAM - http://www.nuclearelephant.com/projects/dspam/
+
+Sales tips! -- http://www.digibuy.com/cgi-bin/hlight_sales3.html?FluidStudios
+
+Skins manager class:
+  Resizable?
+  Contain description, author, etc.
+  Contain thumbnail image
+
+-----------------------------------------------------------------------------------------------------------------------------------
+END
+-----------------------------------------------------------------------------------------------------------------------------------

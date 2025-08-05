@@ -1,0 +1,1125 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\3Dme.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\r\n"
+    "// 1 TYPELIB ""3Dme.tlb""\r\n"
+    "1 TYPELIB ""3Dme.tlb""\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\3Dme.ico"
+IDI_X                   ICON                    "res\\x.ico"
+IDI_SOUND               ICON                    "res\\playsound.ico"
+IDI_CHECK               ICON                    "res\\check.ico"
+IDI_BLANK               ICON                    "res\\blank.ico"
+IDI_TRAY                ICON                    "res\\3Dme-small.ico"
+IDI_INSTALL             ICON                    "res\\install.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_EMAIL_DIALOG DIALOGEX 0, 0, 208, 110
+STYLE DS_SETFONT | DS_CENTER | WS_POPUP | WS_SYSMENU
+EXSTYLE WS_EX_TOOLWINDOW
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LISTBOX         IDC_EMAIL_LIST,7,7,25,14,LBS_OWNERDRAWVARIABLE | 
+                    LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | 
+                    LBS_WANTKEYBOARDINPUT | LBS_EXTENDEDSEL | NOT WS_BORDER | 
+                    WS_VSCROLL | WS_TABSTOP,WS_EX_TRANSPARENT
+    CONTROL         "Check Now",IDC_CHECK_NOW,"Button",BS_OWNERDRAW | NOT 
+                    WS_VISIBLE | WS_DISABLED | WS_TABSTOP,7,7,25,14
+    CONTROL         "Drop menu",IDC_DROP_MENU,"Button",BS_OWNERDRAW | NOT 
+                    WS_VISIBLE | WS_DISABLED | WS_TABSTOP,7,7,25,14
+    CONTROL         "Help",IDC_HELP_BUTTON,"Button",BS_OWNERDRAW | NOT 
+                    WS_VISIBLE | WS_DISABLED | WS_TABSTOP,7,7,25,14
+    CONTROL         "Hide",IDCANCEL,"Button",BS_OWNERDRAW | NOT WS_VISIBLE | 
+                    WS_DISABLED | WS_TABSTOP,7,7,25,14
+    CONTROL         "Exit",IDC_EXIT,"Button",BS_OWNERDRAW | NOT WS_VISIBLE | 
+                    WS_DISABLED | WS_TABSTOP,7,7,25,14
+    CONTROL         "About",IDC_ABOUT,"Button",BS_OWNERDRAW | NOT WS_VISIBLE | 
+                    WS_DISABLED | WS_TABSTOP,7,7,25,14
+    CONTROL         "Mark Read",IDC_MARK_READ,"Button",BS_OWNERDRAW | NOT 
+                    WS_VISIBLE | WS_DISABLED | WS_TABSTOP,7,7,25,14
+    CONTROL         "Show tip",IDC_SHOW_TIP,"Button",BS_OWNERDRAW | NOT 
+                    WS_VISIBLE | WS_DISABLED | WS_TABSTOP,7,7,25,14
+    CONTROL         "Select skin",IDC_SELECT_SKIN,"Button",BS_OWNERDRAW | 
+                    NOT WS_VISIBLE | WS_DISABLED | WS_TABSTOP,7,7,25,14
+    CONTROL         "Disable checking",IDC_DISABLE_CHECKING,"Button",
+                    BS_OWNERDRAW | NOT WS_VISIBLE | WS_DISABLED | WS_TABSTOP,
+                    7,7,25,14
+    CONTROL         "new only",IDC_SHOW_NEW,"Button",BS_OWNERDRAW | NOT 
+                    WS_VISIBLE | WS_DISABLED | WS_TABSTOP,7,7,25,14
+    CONTROL         "stay on top",IDC_STAY_ON_TOP,"Button",BS_OWNERDRAW | 
+                    NOT WS_VISIBLE | WS_DISABLED | WS_TABSTOP,7,7,25,14
+    CONTROL         "Disable reminders",IDC_DISABLE_REMINDERS,"Button",
+                    BS_OWNERDRAW | NOT WS_VISIBLE | WS_DISABLED | WS_TABSTOP,
+                    7,7,25,14
+    CONTROL         "Disable reminder runs",IDC_DISABLE_REMINDER_RUNS,"Button",
+                    BS_OWNERDRAW | NOT WS_VISIBLE | WS_DISABLED | WS_TABSTOP,
+                    7,7,25,14
+    CONTROL         "Disable alarms",IDC_DISABLE_ALARMS,"Button",
+                    BS_OWNERDRAW | NOT WS_VISIBLE | WS_DISABLED | WS_TABSTOP,
+                    7,7,25,14
+    CONTROL         "Disable alarm runs",IDC_DISABLE_ALARM_RUNS,"Button",
+                    BS_OWNERDRAW | NOT WS_VISIBLE | WS_DISABLED | WS_TABSTOP,
+                    7,7,25,14
+    CONTROL         "Disable application popups",IDC_DISABLE_APP_POPUPS,
+                    "Button",BS_OWNERDRAW | NOT WS_VISIBLE | WS_DISABLED | 
+                    WS_TABSTOP,7,7,25,14
+    CONTROL         "Disable keyboard blinking",IDC_DISABLE_KEY_BLINKING,
+                    "Button",BS_OWNERDRAW | NOT WS_VISIBLE | WS_DISABLED | 
+                    WS_TABSTOP,7,7,25,14
+    CONTROL         "Snap to desktop edges",IDC_SNAP_TO_DESKTOP_EDGES,"Button",
+                    BS_OWNERDRAW | NOT WS_VISIBLE | WS_DISABLED | WS_TABSTOP,
+                    7,7,25,14
+    CONTROL         "Disable tray blinking",IDC_DISABLE_TRAY_BLINKING,"Button",
+                    BS_OWNERDRAW | NOT WS_VISIBLE | WS_DISABLED | WS_TABSTOP,
+                    7,7,25,14
+    CTEXT           "Hi, I'm 3D Mail Effects.\n\nI don't have a skin.\n\nPlease help me.\n\nRight-click on me to select a skin.\n\nPlease hurry, I'm feeling naked and vulnerable. :)",
+                    IDC_NO_SKIN_TEXT,7,7,194,96
+    CONTROL         "Show me 3D",IDC_SHOW_3D,"Button",BS_OWNERDRAW | NOT 
+                    WS_VISIBLE | WS_DISABLED | WS_TABSTOP,7,7,25,14
+    CONTROL         "Run email client",IDC_RUN_EMAIL_CLIENT,"Button",
+                    BS_OWNERDRAW | NOT WS_VISIBLE | WS_DISABLED | WS_TABSTOP,
+                    7,7,25,14
+    CONTROL         "Stop pending deletes",IDC_STOP_PENDING_DELETES,"Button",
+                    BS_OWNERDRAW | NOT WS_VISIBLE | WS_DISABLED | WS_TABSTOP,
+                    7,7,25,14
+    CONTROL         "Disable 3D popups",IDC_DISABLE_3D_POPUPS,"Button",
+                    BS_OWNERDRAW | NOT WS_VISIBLE | WS_DISABLED | WS_TABSTOP,
+                    7,7,25,14
+    CONTROL         "Go to website",IDC_GO_TO_WEBSITE,"Button",BS_OWNERDRAW | 
+                    NOT WS_VISIBLE | WS_DISABLED | WS_TABSTOP,7,7,25,14
+END
+
+IDD_APP_PREFS DIALOGEX 0, 0, 160, 113
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Preferences"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LISTBOX         IDC_SELECT_ACCOUNT,19,20,73,47,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Add",IDC_NEW_ACCOUNT,102,19,39,14
+    PUSHBUTTON      "Remove",IDC_DELETE_ACCOUNT,102,35,39,14
+    PUSHBUTTON      "Edit",IDC_EDIT_ACCOUNT,102,52,39,14
+    DEFPUSHBUTTON   "Done",IDOK,130,84,23,22,BS_BITMAP
+    GROUPBOX        "EMail Accounts",IDC_STATIC,7,7,146,67,0,
+                    WS_EX_DLGMODALFRAME
+END
+
+IDD_PREVIEW_DIALOG DIALOGEX 0, 0, 480, 350
+STYLE DS_SETFONT | DS_3DLOOK | WS_POPUP | WS_CAPTION | WS_SYSMENU | 
+    WS_THICKFRAME
+EXSTYLE WS_EX_TOOLWINDOW
+CAPTION "Email preview"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    COMBOBOX        IDC_MULTIPART_COMBO,45,63,270,101,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Wrap text",IDC_WRAP,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,320,63,47,14
+    CONTROL         "Linkify",IDC_LINKIFY,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,378,63,36,14
+    PUSHBUTTON      "Save as...",IDC_SAVE,423,63,50,14
+    PUSHBUTTON      "Delete",IDC_DELETE,7,327,50,14
+    PUSHBUTTON      "Back",IDC_BACK,7,83,16,16,BS_BITMAP
+    PUSHBUTTON      "Forward",IDC_FORWARD,26,83,16,16,BS_BITMAP
+    PUSHBUTTON      "Stop",IDC_STOP,46,83,16,16,BS_BITMAP
+    PUSHBUTTON      "Refresh",IDC_REFRESH,66,83,16,16,BS_BITMAP
+    PUSHBUTTON      "Home",IDC_HOME,85,83,16,16,BS_BITMAP
+    PUSHBUTTON      "Close",IDC_CLOSE,423,327,50,14
+    LTEXT           "",IDC_STATIC_URL,109,83,364,16,SS_CENTERIMAGE | 
+                    SS_SUNKEN
+    LTEXT           "",IDC_STATIC_STATUSBAR,60,327,360,14,SS_CENTERIMAGE | 
+                    SS_SUNKEN
+    EDITTEXT        IDC_FROM_EDIT,45,7,428,12,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_BORDER
+    EDITTEXT        IDC_REPLYTO_EDIT,45,20,428,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER
+    EDITTEXT        IDC_DATE_EDIT,45,34,428,12,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_BORDER
+    EDITTEXT        IDC_SUBJECT_EDIT,45,47,428,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER
+    LTEXT           "From:",IDC_FROM_LABEL,7,7,35,12
+    LTEXT           "Reply-To:",IDC_REPLYTO_LABEL,7,20,35,12
+    LTEXT           "Date:",IDC_DATE_LABEL,7,34,35,12
+    LTEXT           "Subject:",IDC_SUBJECT_LABEL,7,47,35,12
+    RTEXT           "Mime part:",IDC_MIMEPART_LABEL,7,62,35,12,
+                    SS_CENTERIMAGE
+    CONTROL         "",IDC_BROWSER,"{8856F961-340A-11D0-A96B-00C04FD705A2}",
+                    WS_TABSTOP,7,103,466,220
+END
+
+IDD_STARTUP_TIPS DIALOG  0, 0, 277, 161
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "3D Mail Effects -- Tip of the day"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Show tips on startup",IDC_SHOW_TIPS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,140,79,14
+    PUSHBUTTON      "Next tip",IDC_NEXT_TIP,166,140,50,14
+    DEFPUSHBUTTON   "Close",IDOK,220,140,50,14
+END
+
+IDD_EGG DIALOG  0, 0, 333, 175
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "The cutest easter egg on the planet..."
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         178,IDC_STATIC,"Static",SS_BITMAP,0,0,333,217
+END
+
+IDD_3D DIALOGEX 0, 0, 254, 206
+STYLE DS_SETFONT | DS_CENTER | WS_POPUP
+EXSTYLE WS_EX_TOOLWINDOW
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+END
+
+IDD_REG DIALOG  0, 0, 303, 102
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Registration code entry"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_REG_CODE,7,20,289,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,246,81,50,14
+    CTEXT           "Each registration code is specific to each user.\n\nPlease do not distribute your registration code.",
+                    IDC_STATIC,138,42,158,29
+    LTEXT           "Enter your registration code:",IDC_STATIC,7,7,96,8
+    CTEXT           "MORALITY GENERAL'S WARNING:\n\nKeygens cause bugs, crashes and other program misbehavior.",
+                    IDC_STATIC,12,46,115,45
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,7,42,126,53
+END
+
+IDD_VERSION_CHECKER DIALOGEX 0, 0, 370, 241
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION
+EXSTYLE WS_EX_TOOLWINDOW
+CAPTION "3D Mail Effects -- Update notification"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "Close",IDOK,313,220,50,14
+    CONTROL         "",IDC_UPDATE_TEXT,"RICHEDIT",TCS_RAGGEDRIGHT | 
+                    TCS_OWNERDRAWFIXED | TCS_MULTISELECT | WS_BORDER | 
+                    WS_VSCROLL | WS_TABSTOP,7,52,356,166
+    PUSHBUTTON      "Update me",IDC_DOWNLOAD,7,220,50,14
+    CTEXT           "Please wait -- checking for a new version of 3D Mail Effects...",
+                    IDC_UPDATE_STATUS,7,7,356,18,SS_CENTERIMAGE | SS_SUNKEN
+    PUSHBUTTON      "Check for a beta",IDC_CHECK_BETA,60,220,73,14
+    COMBOBOX        IDC_VERSION_LIST,232,34,131,89,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    RTEXT           "Show me what's new for this version or patch:",
+                    IDC_STATIC,7,34,222,12,SS_CENTERIMAGE
+END
+
+IDD_RUN_DIALOG DIALOGEX 0, 0, 239, 282
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Execute"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "Start my registered Email client",IDC_START_EMAIL,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,17,67,154,10
+    CONTROL         "Go to a URL",IDC_START_URL,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,17,103,186,10
+    EDITTEXT        IDC_EDIT_URL,30,116,190,14,ES_AUTOHSCROLL
+    CONTROL         "Run program",IDC_RUN_PROGRAM,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,17,158,153,10
+    EDITTEXT        IDC_PROGRAM_FILE,75,185,116,14,ES_AUTOHSCROLL
+    PUSHBUTTON      ". . .",IDC_PROGRAM_BROWSE,196,185,15,14
+    EDITTEXT        IDC_PROGRAM_DIR,75,201,136,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_PROGRAM_ARG,75,217,136,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "Test this configuration",IDC_TEST_CONFIG,57,256,100,14
+    DEFPUSHBUTTON   "OK",IDOK,181,253,23,22,BS_BITMAP
+    PUSHBUTTON      "Cancel",IDCANCEL,209,253,23,22,BS_BITMAP
+    RTEXT           "Arguments:",IDC_STATIC_PROGRAM4,37,220,36,8
+    RTEXT           "Start in:",IDC_STATIC_PROGRAM3,48,204,25,8
+    RTEXT           "Program:",IDC_STATIC_PROGRAM2,44,188,29,8
+    GROUPBOX        "Program execution",IDC_STATIC_PROGRAM1,30,171,189,66,0,
+                    WS_EX_DLGMODALFRAME
+    GROUPBOX        "Option 1",IDC_STATIC,7,52,225,32,0,WS_EX_DLGMODALFRAME | 
+                    WS_EX_CLIENTEDGE
+    GROUPBOX        "Option 2",IDC_STATIC,7,88,225,50,0,WS_EX_DLGMODALFRAME | 
+                    WS_EX_CLIENTEDGE
+    GROUPBOX        "Option 3",IDC_STATIC,7,142,225,107,0,
+                    WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE
+    LTEXT           "You have three options for execution. You can run your default email client, go to a URL, or run a specific program.\n\nBe careful to enable only those options you want, because you can enable multiples, or all three to start simultaneously.",
+                    IDC_STATIC,7,7,225,41
+END
+
+IDD_DOWNLOAD DIALOGEX 0, 0, 276, 273
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Downloading update"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    PUSHBUTTON      "Cancel",IDCANCEL,219,252,50,14
+    CONTROL         "Progress1",IDC_OVERALL_PROGRESS,"msctls_progress32",
+                    WS_BORDER,16,169,242,6
+    CTEXT           "",IDC_STATIC_STATUS,7,7,262,13,SS_CENTERIMAGE | 
+                    SS_SUNKEN
+    RTEXT           "Size of the current file:",IDC_STATIC,63,46,72,8
+    RTEXT           "Current transfer rate:",IDC_STATIC,63,90,72,8
+    RTEXT           "Estimated time left:",IDC_STATIC,63,79,72,8
+    RTEXT           "Download time:",IDC_STATIC,63,68,72,8
+    RTEXT           "Bytes remaining:",IDC_STATIC,63,57,72,8
+    LTEXT           "",IDC_STATIC_SIZE,139,47,72,8
+    LTEXT           "",IDC_STATIC_RATE,139,91,72,8
+    LTEXT           "",IDC_STATIC_TIME_LEFT,139,80,72,8
+    LTEXT           "",IDC_STATIC_TIME,139,69,72,8
+    LTEXT           "",IDC_STATIC_REMAIN,139,58,72,8
+    CONTROL         "Slider1",IDC_SPEED_SLIDER,"msctls_trackbar32",
+                    TBS_AUTOTICKS | TBS_TOP | WS_TABSTOP,39,222,193,17
+    LTEXT           "Slower",IDC_STATIC,14,230,22,8
+    LTEXT           "Faster",IDC_STATIC,238,230,20,8
+    GROUPBOX        "Download statistics",IDC_STATIC,7,22,262,95,0,
+                    WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE
+    GROUPBOX        "Throughput control",IDC_STATIC,7,208,262,41,0,
+                    WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE
+    CTEXT           "",IDC_DOWNLOAD_URL,16,140,242,15,SS_CENTERIMAGE | 
+                    SS_SUNKEN
+    RTEXT           "Average transfer rate:",IDC_STATIC,63,102,72,8
+    LTEXT           "",IDC_STATIC_RATE_AVERAGE,139,102,72,8
+    CONTROL         "Progress1",IDC_FILE_PROGRESS,"msctls_progress32",
+                    WS_BORDER | 0x1,16,193,242,6
+    RTEXT           "Current file:",IDC_STATIC,63,36,72,8
+    LTEXT           "",IDC_STATIC_CURRENT_FILE,139,37,72,8
+    CTEXT           "Overall progress",IDC_STATIC,16,159,242,8
+    CTEXT           "Current file progress",IDC_STATIC,16,183,242,8
+    CTEXT           "Currently downloading",IDC_STATIC,16,130,242,8
+    GROUPBOX        "Progress",IDC_STATIC,7,118,262,88,0,WS_EX_DLGMODALFRAME | 
+                    WS_EX_CLIENTEDGE
+END
+
+IDD_SCRIPT_NOTICE DIALOGEX 0, 0, 265, 151
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CLIENTEDGE
+CAPTION "Webmail script support notice"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    PUSHBUTTON      "Close",IDCANCEL,208,130,50,14
+    LTEXT           "3D Mail Effects supports Webmail hosts (like Hotmail && Yahoo!) through a scripting system. If your Webmail server was not listed, then there is still hope!",
+                    IDC_STATIC,7,7,251,23
+    LTEXT           "If you're into programming or writing scripts (or want to learn), you can create your own script. As an incentive, free registrations are available for those that create working, compliant scripts of unsupported hosts (see the help for more information.)",
+                    IDC_STATIC,7,54,251,38
+    LTEXT           "Because of the use of Webmail scripts, support for additional hosts can be added to 3DME without waiting for the developers to update the software.",
+                    IDC_STATIC,7,29,251,26
+    LTEXT           "If you're not into scripting, then you may find a user that has already created a script for the Webmail host you are trying to access. Simply visit the help file for more information on how to obtain these scripts.",
+                    IDC_STATIC,7,94,251,28
+END
+
+IDD_REG_DOWNLOAD DIALOGEX 0, 0, 294, 146
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "Close",IDOK,237,125,50,14
+    LTEXT           "In order to enter your registration information, you must download the registered version of the software.\n\nThe registered version will require your registration key in order to function.\n\nWould you like to download the software or visit the website?",
+                    IDC_STATIC,13,13,267,50
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDFRAME,7,7,280,65,
+                    WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE
+    PUSHBUTTON      "Download software",IDC_REG_DOWNLOAD,49,86,91,20
+    PUSHBUTTON      "Visit 3DME website",IDC_REG_WEBSITE,153,86,91,20
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDFRAME,7,78,280,41
+END
+
+IDD_PREFERENCESUI DIALOGEX 0, 0, 356, 279
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION
+CAPTION "Preferences"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,187,258,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,244,258,50,14
+    CONTROL         "",IDC_TREE,"SysTreeView32",TVS_HASBUTTONS | 
+                    TVS_HASLINES | TVS_LINESATROOT | TVS_SHOWSELALWAYS | 
+                    TVS_TRACKSELECT | WS_BORDER | WS_TABSTOP,7,7,111,243
+    PUSHBUTTON      "Apply",IDC_APPLY,299,258,50,14
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDFRAME,7,253,342,1
+    CONTROL         "",IDC_PREFLET_FRAME,"Static",SS_BLACKFRAME,124,7,225,
+                    243
+END
+
+IDD_TEST_PREFLET DIALOGEX 0, 0, 200, 212
+STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    GROUPBOX        "",IDC_STATIC,7,49,186,156
+    CONTROL         213,IDC_STATIC,"Static",SS_BITMAP,7,7,186,42
+END
+
+IDD_PREFLET_GLOBAL DIALOGEX 0, 0, 225, 243
+STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "Automatically run at startup",IDC_RUN_ON_STARTUP,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,67,66,103,10
+    CONTROL         "Show tips on startup",IDC_TIPS_ON_STARTUP,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,67,78,80,10
+    CONTROL         "Enable transaction logs",IDC_ENABLE_TRANSACTION_LOGS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,67,102,89,10
+    CONTROL         "Auto-check for updates",IDC_AUTO_CHECK_FOR_UPDATES,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,67,113,90,10
+    CONTROL         "",IDC_BLINK_KEYBOARD_LED_SPEED,"msctls_trackbar32",
+                    TBS_NOTICKS | WS_TABSTOP,66,155,122,15
+    CONTROL         "",IDC_BLINK_TRAY_ICON_SPEED,"msctls_trackbar32",
+                    TBS_NOTICKS | WS_TABSTOP,66,195,122,15
+    CONTROL         215,IDC_STATIC,"Static",SS_BITMAP,0,0,199,37
+    LTEXT           "Startup options:",IDC_STATIC,35,54,54,8
+    LTEXT           "Software options:",IDC_STATIC,35,91,60,8
+    LTEXT           "Blinking && flashing:",IDC_STATIC,35,130,60,8
+    LTEXT           "Blink keyboard LEDs",IDC_STATIC,95,144,64,8
+    LTEXT           "Blink tray icon",IDC_STATIC,105,182,45,8
+    LTEXT           "Off",IDC_STATIC,68,209,12,8
+    LTEXT           "Slow",IDC_STATIC,87,209,16,8
+    LTEXT           "Fast",IDC_STATIC,172,209,15,8
+    LTEXT           "Off",IDC_STATIC,68,169,12,8
+    LTEXT           "Slow",IDC_STATIC,87,169,16,8
+    LTEXT           "Fast",IDC_STATIC,172,169,15,8
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,64,152,126,29
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,64,190,126,29
+END
+
+IDD_PREFLET_WINDOW DIALOGEX 0, 0, 225, 243
+STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "Start minimized",IDC_START_MINIMIZED_CHECK,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,53,76,64,10
+    CONTROL         "Show 3DME on the taskbar",IDC_SHOW_ON_TASKBAR_CHECK,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,53,87,101,10
+    CONTROL         "Stay on top",IDC_STAY_ON_TOP_CHECK,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,53,98,52,10
+    CONTROL         "Snap to desktop edges",IDC_SNAP_TO_EDGES_CHECK,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,53,108,86,10
+    CONTROL         "Mark all emails as read",IDC_MARK_READ_ON_HIDE_CHECK,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,53,148,86,10
+    CONTROL         "Close the 3D popup",IDC_CLOSE_3D_POPUP_ON_HIDE_CHECK,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,53,159,77,10
+    CONTROL         217,IDC_STATIC,"Static",SS_BITMAP,0,0,199,37
+    LTEXT           "When hiding (minimizing to the tray):",IDC_STATIC,36,
+                    135,118,8
+    LTEXT           "General window options:",IDC_STATIC,36,66,80,8
+    EDITTEXT        IDC_EDGE_SNAP_DISTANCE_EDIT,140,106,26,12,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    LTEXT           "pixels",IDC_EDGE_SNAP_DISTANCE_STATIC,170,108,19,8
+END
+
+IDD_PREFLET_ABOUT DIALOGEX 0, 0, 225, 243
+STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         219,IDC_STATIC,"Static",SS_BITMAP,0,0,199,37
+    GROUPBOX        "Copyright",IDC_STATIC,7,174,211,62
+    CTEXT           "Copyright 2003, Paul Nettle && Fluid Studios.\r\nAll Rights Reserved.\r\n\r\nThis product offers no warranty.\r\nUse at your own risk.",
+                    IDC_STATIC,15,188,196,41
+    CTEXT           "",IDC_VERSION_STATIC,14,53,197,8
+    LTEXT           "Product home page",IDC_STATIC,78,118,69,8
+    CTEXT           "",IDC_REG_STATIC,14,63,197,28
+    LTEXT           "http://www.3DMailEffects.com/",IDC_HOME_PAGE_STATIC,61,
+                    129,103,8
+    LTEXT           "Company home page",IDC_STATIC,78,143,69,8
+    LTEXT           "http://www.FluidStudios.com/",IDC_COMPANY_PAGE_STATIC,
+                    63,153,99,8
+    GROUPBOX        "Version information",IDC_STATIC,7,41,211,57
+    GROUPBOX        "Web information",IDC_STATIC,7,104,211,65
+END
+
+IDD_PREFLET_CREDITS DIALOGEX 0, 0, 225, 243
+STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         220,IDC_STATIC,"Static",SS_BITMAP,0,0,199,37
+    LTEXT           "The following is a list of people who were kind enough to offer their talents, insight && feedback to 3D Mail Effects.\n\nBecause of their help, 3D Mail Effects is a better product. They deserve recognition and gratitude for their efforts.",
+                    IDC_STATIC,14,49,197,41
+    GROUPBOX        "Other resources",IDC_STATIC,7,189,211,47
+    LTEXT           "EXE compression by UPX (",IDC_STATIC,19,211,83,10
+    RTEXT           "- Paul Nettle / Fluid Studios",IDC_STATIC,115,96,96,10
+    LTEXT           "Mike Hopper",IDC_STATIC,27,131,46,9
+    LTEXT           "Extensive testing && feedback",IDC_STATIC,74,131,97,9
+    LTEXT           "Se-Joon Kim",IDC_STATIC,27,143,46,9
+    LTEXT           "Extensive testing of Unicode support",IDC_STATIC,74,143,
+                    123,9
+    LTEXT           "Kris Nettle",IDC_STATIC,27,155,42,9,SS_CENTERIMAGE
+    LTEXT           "Never-ending patience while I spent hours at the computer.",
+                    IDC_STATIC,74,155,121,17
+    LTEXT           "Some icons stolen from Gnome (",IDC_STATIC,19,202,104,
+                    10
+    LTEXT           "http://www.gnome.org/",IDC_GNOME_PAGE_STATIC,123,202,79,
+                    10
+    LTEXT           "http://upx.sourceforge.net/",IDC_UPX_PAGE_STATIC,104,
+                    211,93,10
+    LTEXT           ")",IDC_STATIC,197,211,8,10
+    LTEXT           "SSL support by cURL (",IDC_STATIC,19,220,71,10
+    LTEXT           "http://curl.haxx.se/",IDC_CURL_PAGE_STATIC,92,220,65,10
+    LTEXT           ")",IDC_STATIC,158,220,8,10
+    LTEXT           ")",IDC_STATIC,202,202,8,10
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDFRAME,54,117,117,1
+END
+
+IDD_PREFLET_SUPPORT DIALOGEX 0, 0, 225, 243
+STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         221,IDC_STATIC,"Static",SS_BITMAP,0,0,199,37
+    CTEXT           "http://www.3DMailEffects.com/help.shtml",
+                    IDC_HELP_PAGE_STATIC,7,132,211,8
+    CTEXT           "",IDC_VERSION_STATIC,7,46,211,8
+    CTEXT           "Please visit the 3D Mail Effects website for support",
+                    IDC_STATIC,7,116,211,9
+END
+
+IDD_PREFLET_NETWORK DIALOGEX 0, 0, 225, 243
+STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         224,IDC_STATIC,"Static",SS_BITMAP,0,0,225,37
+    CONTROL         "For dial-up users, this option should usually be enabled. This prevents 3DME from attempting to check for email while you are offline.\n\nDisable modem auto-dial",
+                    IDC_DISABLE_AUTODIAL,"Button",BS_AUTOCHECKBOX | 
+                    BS_BOTTOM | BS_MULTILINE | WS_TABSTOP,14,66,197,43
+    GROUPBOX        "Other network settings",IDC_STATIC,14,123,197,78
+    LTEXT           "For users that require proxy configuration, see the ""Proxy Settings"" configuration entry in the preferences tree to the left.",
+                    IDC_STATIC,21,136,182,26
+    LTEXT           "Most other settings (such as POP3 ports) are configured on a per-account basis. Visit your email account settings to configure these settings.",
+                    IDC_STATIC,21,164,182,26
+END
+
+IDD_PREFLET_PROXY DIALOGEX 0, 0, 225, 243
+STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    COMBOBOX        IDC_PROXY_TYPE_COMBO,25,63,139,30,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_PROXY_HOST_EDIT,25,91,139,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_PROXY_PORT_EDIT,174,91,30,12,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    CONTROL         "",IDC_PROXY_AUTH_CHECK,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,14,120,8,8
+    EDITTEXT        IDC_PROXY_USER_EDIT,25,117,64,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_PROXY_PASS_EDIT,100,117,64,12,ES_PASSWORD | 
+                    ES_AUTOHSCROLL
+    CONTROL         "Use proxy to resolve hostnames",IDC_PROXY_RESOLVE_CHECK,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,136,117,8
+    CONTROL         "",IDC_HTTP_PROXY_CHECK,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,14,206,10,8
+    EDITTEXT        IDC_HTTP_PROXY_HOST_EDIT,25,204,139,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_HTTP_PROXY_PORT_EDIT,174,204,30,12,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    CONTROL         227,IDC_STATIC,"Static",SS_BITMAP,0,0,225,37
+    GROUPBOX        "Webmail proxy override",IDC_STATIC,7,156,211,63
+    LTEXT           "Enable this option to override the above settings, allowing you to specify a standard HTTP proxy for Webmail access. This will not affect POP3 access.",
+                    IDC_STATIC,14,166,197,25
+    CTEXT           ":",IDC_STATIC,166,204,8,8,SS_CENTERIMAGE
+    LTEXT           "Host",IDC_HTTP_PROXY_HOST_STATIC,25,194,16,8
+    LTEXT           "Port",IDC_HTTP_PROXY_PORT_STATIC,174,194,14,8
+    GROUPBOX        "POP3/HTTP proxy settings",IDC_STATIC,7,42,211,107
+    LTEXT           "Proxy type",IDC_STATIC,25,52,36,8
+    CTEXT           ":",IDC_STATIC,166,92,8,8,SS_CENTERIMAGE
+    LTEXT           "Host",IDC_PROXY_HOST_STATIC,25,82,16,8
+    LTEXT           "Port",IDC_PROXY_PORT_STATIC,175,82,14,8
+    LTEXT           "Username",IDC_PROXY_USER_STATIC,25,108,33,8
+    LTEXT           "Password",IDC_PROXY_PASS_STATIC,101,108,32,8
+END
+
+IDD_PREFLET_EMAIL_SETTINGS DIALOGEX 0, 0, 225, 243
+STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "Ask for comfirmation when deleting emails",
+                    IDC_EMAIL_CONFIRM_DELETE_CHECK,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,15,80,149,10
+    EDITTEXT        IDC_ACCOUNT_CREATE_EDIT,15,143,144,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "Create",IDC_ACCOUNT_CREATE_BUTTON,161,142,50,14
+    COMBOBOX        IDC_ACCOUNT_DELETE_COMBO,15,177,144,59,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Delete",IDC_ACCOUNT_DELETE_BUTTON,161,177,50,14
+    CONTROL         229,IDC_STATIC,"Static",SS_BITMAP,0,0,225,37
+    GROUPBOX        "Create or delete email accounts",IDC_STATIC,7,119,211,
+                    84
+    GROUPBOX        "General email settings",IDC_STATIC,7,65,211,38
+    LTEXT           "New account name:",IDC_STATIC,15,132,64,8
+    LTEXT           "Select account to delete:",IDC_STATIC,15,167,81,8
+END
+
+IDD_PREFLET_EMAIL_ACCOUNT DIALOGEX 0, 0, 225, 243
+STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "POP3",IDC_ACCOUNT_TYPE_POP3_RADIO,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP,19,54,33,10
+    CONTROL         "Webmail",IDC_ACCOUNT_TYPE_WEBMAIL_RADIO,"Button",
+                    BS_AUTORADIOBUTTON,55,54,43,10
+    CONTROL         "Disabled",IDC_ACCOUNT_TYPE_DISABLED_RADIO,"Button",
+                    BS_AUTORADIOBUTTON,101,54,43,10
+    EDITTEXT        IDC_ACCOUNT_HOST_EDIT,19,84,149,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_ACCOUNT_PORT_EDIT,171,84,39,12,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    COMBOBOX        IDC_ACCOUNT_SCRIPT_COMBO,19,84,149,30,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_ACCOUNT_USERNAME_EDIT,19,112,71,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_ACCOUNT_PASSWORD_EDIT,97,112,71,12,ES_PASSWORD | 
+                    ES_AUTOHSCROLL
+    EDITTEXT        IDC_ACCOUNT_CHECK_FREQ_EDIT,97,130,39,12,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    COMBOBOX        IDC_ACCOUNT_CHECK_FREQ_COMBO,141,130,56,30,
+                    CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_ACCOUNT_SERVER_TIMEOUT_EDIT,97,148,39,12,
+                    ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Retrieve entire email contents",
+                    IDC_ACCOUNT_RETRIEVE_ENTIRE_RADIO,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP,19,172,110,10
+    CONTROL         "Retrieve email headers only",
+                    IDC_ACCOUNT_RETRIEVE_HEADERS_RADIO,"Button",
+                    BS_AUTORADIOBUTTON,19,182,105,10
+    CONTROL         "Do not retrieve headers or email contents",
+                    IDC_ACCOUNT_RETRIEVE_NOTHING_RADIO,"Button",
+                    BS_AUTORADIOBUTTON,19,191,149,10
+    CONTROL         "Display this account in a different color",
+                    IDC_ACCOUNT_USE_COLOR_CHECK,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,19,207,137,10
+    CONTROL         "",IDC_ACCOUNT_COLOR_FRAME,"Static",SS_ETCHEDFRAME | 
+                    SS_NOTIFY,158,206,52,12
+    CONTROL         230,IDC_STATIC,"Static",SS_BITMAP,0,0,225,37
+    LTEXT           "Port",IDC_ACCOUNT_PORT_STATIC,171,74,14,8
+    LTEXT           "Host",IDC_ACCOUNT_HOST_STATIC,19,74,16,8
+    LTEXT           "Script",IDC_ACCOUNT_SCRIPT_STATIC,19,73,19,8
+    CONTROL         "",IDC_SEPARATOR1_STATIC,"Static",SS_ETCHEDFRAME,19,68,
+                    192,1
+    LTEXT           "Select account type:",IDC_STATIC,7,42,67,8
+    LTEXT           "Username",IDC_ACCOUNT_USERNAME_STATIC,19,100,33,8
+    LTEXT           "Password",IDC_ACCOUNT_PASSWORD_STATIC,97,100,32,8
+    RTEXT           "Check for mail every",IDC_ACCOUNT_CHECK_FREQ_STATIC,24,
+                    132,66,8
+    CONTROL         "",IDC_SEPARATOR2_STATIC,"Static",SS_ETCHEDFRAME,19,166,
+                    192,1
+    RTEXT           "Server timeout",IDC_ACCOUNT_SERVER_TIMEOUT_STATIC,8,150,
+                    82,8
+    LTEXT           "seconds (0 = none)",IDC_ACCOUNT_SERVER_TIMEOUT_STATIC2,
+                    140,150,64,8
+END
+
+IDD_PREFLET_ALARM DIALOGEX 0, 0, 225, 243
+STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         233,IDC_STATIC,"Static",SS_BITMAP,0,0,225,37
+    CONTROL         "Show rotating 3D object",IDC_ALARM_SHOW_3D_CHECK,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,17,65,93,10
+    CONTROL         "Show the 3DME application window (email list)",
+                    IDC_ALARM_SHOW_WINDOW_CHECK,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,17,77,162,10
+    CONTROL         "Play a sound",IDC_ALARM_PLAY_SOUND_CHECK,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,17,102,57,10
+    GROUPBOX        "Perform these actions when new mail arrives",IDC_STATIC,
+                    7,52,211,147
+    EDITTEXT        IDC_ALARM_SOUND_FILE_EDIT,29,114,142,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_ALARM_BROWSE_SOUND_BUTTON,173,114,18,12
+    PUSHBUTTON      "",IDC_ALARM_PLAY_SOUND_BUTTON,193,114,18,12,BS_ICON
+    CONTROL         "Start my registered email software",
+                    IDC_ALARM_RUN_EMAIL_CLIENT_CHECK,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,17,90,127,10
+    CONTROL         "Visit a web page",IDC_ALARM_VISIT_WEB_PAGE_CHECK,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,17,133,68,10
+    EDITTEXT        IDC_ALARM_WEB_PAGE_EDIT,29,145,181,12,ES_AUTOHSCROLL
+    CONTROL         "Run a program",IDC_ALARM_RUN_PROGRAM_CHECK,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,17,163,63,10
+    EDITTEXT        IDC_ALARM_PROGRAM_EDIT,43,175,146,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_ALARM_BROWSE_PROGRAM_BUTTON,193,175,18,12
+    ICON            "",IDC_ALARM_PROGRAM_ICON,21,175,20,20,SS_SUNKEN
+END
+
+IDD_PREFLET_REMINDER DIALOGEX 0, 0, 225, 243
+STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         234,IDC_STATIC,"Static",SS_BITMAP,0,0,225,37
+    CONTROL         "Play a sound",IDC_REMINDER_PLAY_SOUND_CHECK,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,17,96,57,10
+    GROUPBOX        "Perform these actions with reminders",IDC_STATIC,7,81,
+                    211,114
+    EDITTEXT        IDC_REMINDER_SOUND_FILE_EDIT,29,108,142,12,
+                    ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_REMINDER_BROWSE_SOUND_BUTTON,173,108,18,12
+    PUSHBUTTON      "",IDC_REMINDER_PLAY_SOUND_BUTTON,193,108,18,12,BS_ICON
+    CONTROL         "Visit a web page",IDC_REMINDER_VISIT_WEB_PAGE_CHECK,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,17,127,68,10
+    EDITTEXT        IDC_REMINDER_WEB_PAGE_EDIT,29,139,180,12,ES_AUTOHSCROLL
+    CONTROL         "Run a program",IDC_REMINDER_RUN_PROGRAM_CHECK,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,17,157,63,10
+    EDITTEXT        IDC_REMINDER_PROGRAM_EDIT,43,169,147,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_REMINDER_BROWSE_PROGRAM_BUTTON,193,169,18,12
+    EDITTEXT        IDC_REMINDER_FREQUENCY_EDIT,101,61,37,12,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    LTEXT           "Run this reminder every",IDC_STATIC,17,63,78,8
+    COMBOBOX        IDC_REMINDER_FREQUENCY_COMBO,143,61,48,30,
+                    CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    ICON            "",IDC_REMINDER_PROGRAM_ICON,21,169,20,20,SS_SUNKEN
+END
+
+IDD_PREFLET_SKINS DIALOGEX 0, 0, 225, 243
+STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         237,IDC_STATIC,"Static",SS_BITMAP,0,0,225,37
+    CONTROL         "",IDC_SKIN_THUMB_FRAME,"Static",SS_BITMAP | 
+                    SS_CENTERIMAGE | SS_SUNKEN,15,43,96,102
+    LISTBOX         IDC_SKIN_LIST,114,43,96,102,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    RTEXT           "Name",IDC_STATIC,17,154,42,12,SS_CENTERIMAGE
+    RTEXT           "Created by",IDC_STATIC,17,168,42,12,SS_CENTERIMAGE
+    RTEXT           "Author's URL",IDC_STATIC,17,196,42,12,SS_CENTERIMAGE
+    RTEXT           "Description",IDC_STATIC,17,182,42,12,SS_CENTERIMAGE
+    RTEXT           "Copyright",IDC_STATIC,17,210,42,12,SS_CENTERIMAGE
+    EDITTEXT        IDC_SKIN_NAME_EDIT,62,154,148,12,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    EDITTEXT        IDC_SKIN_AUTHOR_EDIT,62,168,148,12,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    EDITTEXT        IDC_SKIN_DESCRIPTION_EDIT,62,182,148,12,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    EDITTEXT        IDC_SKIN_AUTHOR_URL_EDIT,62,196,148,12,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    EDITTEXT        IDC_SKIN_COPYRIGHT_EDIT,62,210,148,12,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    LTEXT           "Get more skins",IDC_MORE_SKINS_LINK,170,228,48,8
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 6,0,3,0
+ PRODUCTVERSION 6,0,3,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x21L
+#else
+ FILEFLAGS 0x20L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "Comments", "3D Mail Effects - EMail notification with 3D effects"
+            VALUE "CompanyName", "Fluid Studios"
+            VALUE "FileDescription", "3D Mail Effects"
+            VALUE "FileVersion", "6.0.3"
+            VALUE "InternalName", "3D Mail Effects"
+            VALUE "LegalCopyright", "Copyright (C) 2000 - 2002 Fluid Studios. All rights reserved."
+            VALUE "OriginalFilename", "3Dme.exe"
+            VALUE "ProductName", "3D Mail Effects"
+            VALUE "ProductVersion", "6.0.3"
+            VALUE "SpecialBuild", "There is no special build! Stop looking at this information and get back to work! What do you expect to find here??! :)"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_EMAIL_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 201
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 103
+    END
+
+    IDD_APP_PREFS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 153
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 106
+    END
+
+    IDD_PREVIEW_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 473
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 341
+    END
+
+    IDD_STARTUP_TIPS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 270
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 154
+    END
+
+    IDD_EGG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 326
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 168
+    END
+
+    IDD_3D, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 247
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 199
+    END
+
+    IDD_REG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 296
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 95
+    END
+
+    IDD_VERSION_CHECKER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 363
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 234
+    END
+
+    IDD_RUN_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 232
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 275
+    END
+
+    IDD_DOWNLOAD, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 269
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 266
+    END
+
+    IDD_SCRIPT_NOTICE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 258
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 144
+    END
+
+    IDD_REG_DOWNLOAD, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 287
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 139
+    END
+
+    IDD_PREFERENCESUI, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 349
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 272
+    END
+
+    IDD_TEST_PREFLET, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 193
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 205
+    END
+
+    IDD_PREFLET_GLOBAL, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 218
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 236
+    END
+
+    IDD_PREFLET_WINDOW, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 218
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 236
+    END
+
+    IDD_PREFLET_ABOUT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 218
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 236
+    END
+
+    IDD_PREFLET_CREDITS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 218
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 236
+    END
+
+    IDD_PREFLET_SUPPORT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 218
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 236
+    END
+
+    IDD_PREFLET_NETWORK, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 218
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 236
+    END
+
+    IDD_PREFLET_PROXY, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 218
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 236
+    END
+
+    IDD_PREFLET_EMAIL_SETTINGS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 218
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 236
+    END
+
+    IDD_PREFLET_EMAIL_ACCOUNT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 218
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 236
+    END
+
+    IDD_PREFLET_ALARM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 218
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 236
+    END
+
+    IDD_PREFLET_REMINDER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 218
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 236
+    END
+
+    IDD_PREFLET_SKINS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 218
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 236
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BIG_CHECK           BITMAP                  "res\\bigcheck.bmp"
+IDB_BIG_X               BITMAP                  "res\\bigx.bmp"
+IDB_EGG                 BITMAP                  "res\\egg.bmp"
+IDB_BACK                BITMAP                  "res\\back.bmp"
+IDB_FORWARD             BITMAP                  "res\\forward.bmp"
+IDB_STOP                BITMAP                  "res\\stop.bmp"
+IDB_REFRESH             BITMAP                  "res\\refresh.bmp"
+IDB_HOME                BITMAP                  "res\\home.bmp"
+IDB_PREFLET_GLOBAL      BITMAP                  "res\\PrefletGlobal.bmp"
+IDB_PREFLET_WINDOW      BITMAP                  "res\\PrefletWindow.bmp"
+IDB_PREFLET_ABOUT       BITMAP                  "res\\PrefletAbout.bmp"
+IDB_PREFLET_CREDITS     BITMAP                  "res\\PrefletCredits.bmp"
+IDB_PREFLET_SUPPORT     BITMAP                  "res\\PrefletSupport.bmp"
+IDB_PREFLET_NETWORK     BITMAP                  "res\\PrefletNetwork.bmp"
+IDB_PREFLET_PROXY       BITMAP                  "res\\PrefletProxy.bmp"
+IDB_PREFLET_EMAIL_SETTINGS BITMAP                  "res\\PrefletEmailSettings.bmp"
+IDB_PREFLET_EMAIL_ACCOUNT BITMAP                  "res\\PrefletEmailAccount.bmp"
+IDB_PREFLET_ALARM       BITMAP                  "res\\PrefletAlarm.bmp"
+IDB_PREFLET_REMINDER    BITMAP                  "res\\PrefletReminder.bmp"
+IDB_PREFLET_SKINS       BITMAP                  "res\\PrefletSkin.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Cursor
+//
+
+IDC_HAND_CURSOR         CURSOR                  "res\\hand_cur.cur"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// RT_MANIFEST
+//
+
+IDR_MANIFEST            RT_MANIFEST             "res\\3DME.manifest"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_BLANK_MENU MENU 
+BEGIN
+    MENUITEM "blank",                       0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_PREVIEW_DIALOG DLGINIT
+BEGIN
+    IDC_BROWSER, 0x376, 160, 0
+0x0000, 0x0000, 0x004c, 0x0000, 0x483e, 0x0000, 0x2500, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x004c, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0001, 
+0x0000, 0xd0e0, 0x0057, 0x3573, 0x11cf, 0x69ae, 0x0008, 0x2e2b, 0x6212, 
+0x0008, 0x0000, 0x0000, 0x0000, 0x004c, 0x0000, 0x1401, 0x0002, 0x0000, 
+0x0000, 0x00c0, 0x0000, 0x0000, 0x4600, 0x0080, 0x0000, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0001, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// REGISTRY
+//
+
+IDR_FS3DME              REGISTRY                "3Dme.rgs"
+IDR_SCRIPTSKIN          REGISTRY                "ScriptSkin.rgs"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About 3D Mail Effects..."
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\3Dme.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+// 1 TYPELIB "3Dme.tlb"
+1 TYPELIB "3Dme.tlb"
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

@@ -1,0 +1,60 @@
+Microsoft Developer Studio Workspace File, Format Version 6.00
+# WARNING: DO NOT EDIT OR DELETE THIS WORKSPACE FILE!
+
+###############################################################################
+
+Project: "3Dme"=.\3Dme.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name Upd
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name CSum
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "CSum"=.\CSum\CSum.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "Upd"=.\Upd\Upd.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Global:
+
+Package=<5>
+{{{
+}}}
+
+Package=<3>
+{{{
+    {8856F961-340A-11D0-A96B-00C04FD705A2}
+}}}
+
+###############################################################################
+

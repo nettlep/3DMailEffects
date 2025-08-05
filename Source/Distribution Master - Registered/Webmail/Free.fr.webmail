@@ -1,0 +1,273 @@
+// ---------------------------------------------------------------------------------------------------------------------------------
+//  _ __ _                  ___
+// |  ___/                 / __>
+// | |__ ____ ___   ___   | |__ ____
+// |  _// __// _ \ / _ \  |  _// __/
+// | | | |  | <_> | <_> | | | | |
+// | | | |  | <__/| <__/  | | | |
+// |_| |_|   \___> \___>()|_| |_|
+//
+// This script has been written by Christophe Ulses
+// You can contact me: christophe@ulses.net
+//
+// ---------------------------------------------------------------------------------------------------------------------------------
+//
+// Description:
+//
+//   The purpose of this script is to completely handle Free-webmail transactions but also every IMP based webmail
+//   (IMP is a famous PHP webmail script)
+//
+// History:
+//
+//   Originally created on 30/01/2002 by Christophe Ulses
+//
+// Author:
+//
+//   Christophe Ulses (christophe@ulses.net)
+//
+// Notes:
+//
+//   Thanks to Fluid Studios for their program and their Hotmail script which was used as a base for this one...
+//
+// 
+---------------------------------------------------------------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// __retrieve is always where the script execution begins for email retrieval
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+__retrieve:
+
+	// Make the username/password url-safe
+
+	convertReservedURI __user_name
+	convertReservedURI __user_pass
+
+	// Go read the inbox
+
+	OnError	err_connect
+	SetVar	inbox_url  "http://imp.free.fr/horde/imp/mailbox.php3?actionID=6&mailbox=INBOX&imapuser=" __user_name "&pass=" __user_pass "&server=imap.free.fr&port=143&folders=INBOX"
+	GetHTTP	inbox_data inbox_url
+
+	// Check for invalid user/pass
+
+	Call	check_for_auth_error
+
+read_next_message:
+
+	SetVar	msgid
+	SetVar	from "Unknown"
+	SetVar	to
+	SetVar	subject "Unknown"
+	SetVar	date
+	SetVar	body
+	SetVar	attachments
+
+	// Check if message left
+
+	OnError	end_process
+	Skip	inbox_data 1
+	Erase	inbox_data 0 @inbox_data
+	Find	inbox_data "message.php3?index="
+	Skip	inbox_data 1
+	Erase	inbox_data 0 @inbox_data
+
+	// Now, go create messages
+
+	OnError	err_inbox
+	Find	inbox_data "message.php3?index="
+	Erase	inbox_data 0 @inbox_data
+	SetVar	messg_url  "http://imp.free.fr/horde/imp/" inbox_data
+	Find	messg_url  "\""
+	Erase	messg_url @messg_url
+
+	// Find message ID
+
+	OnError err_messg_id
+	SetVar	msgid messg_url
+	Find	msgid "?index="
+	Skip	msgid 7
+	Erase	msgid 0 @msgid
+	Find	msgid "&"
+	Erase	msgid @msgid
+
+	OnError continue_reading
+	Find	__msgid_list "[$]" msgid "[$]"
+	// the message is already known, add empty and goto next
+	AddMail	msgid from to subject date body attachments
+	Goto	read_next_message
+
+	// else continue...
+
+continue_reading:
+
+	OnError err_messg
+	GetHTTP	messg_data messg_url
+
+	// searching for Date field
+
+	OnError err_messg_date
+	Find	messg_data "<b>Date</b>"
+	Find	messg_data "bgcolor="
+	Skip	messg_data 18
+	Erase	messg_data 0 @messg_data
+	SetVar	field_date messg_data
+	Find	field_date "</td>"
+	Erase	field_date @field_date
+
+	// searching for From field
+
+	OnError err_messg_from
+	Find	messg_data "<b>From</b>"
+	Find	messg_data "status='';\">"
+	Skip	messg_data 12
+	Erase	messg_data 0 @messg_data
+	SetVar	field_from messg_data
+	Find	field_from "</a>"
+	Erase	field_from @field_from
+	RemTags	field_from
+	UnHTML	field_from
+
+	// searching for To field
+
+	OnError err_messg_to
+	Find	messg_data "<b>To</b>"
+	Find	messg_data "status='';\">"
+	Skip	messg_data 12
+	Erase	messg_data 0 @messg_data
+	SetVar	field_to messg_data
+	Find	field_to "</a>"
+	Erase	field_to @field_to
+
+	// searching for Subject field
+
+	OnError err_messg_subj
+	Find	messg_data "<b>Subject</b>"
+	Find	messg_data "bgcolor="
+	Skip	messg_data 18
+	Erase	messg_data 0 @messg_data
+	SetVar	field_subj messg_data
+	Find	field_subj "</td>"
+	Erase	field_subj @field_subj
+
+	// searching for Attachments
+
+	OnError after_attach
+	SetVar	attach "0"
+	Find	messg_data "<b>Parts</b>"
+	SetVar	attach "1"
+
+after_attach:
+
+	// searching for Body
+
+	OnError err_messg_body
+	Find	messg_data "<pre>"
+	Skip	messg_data 5
+	Erase	messg_data 0 @messg_data
+	SetVar	body messg_data
+	Find	body "</pre>"
+	Erase	body @body
+
+	// Add this email
+
+	AddMail	msgid field_from field_to field_subj field_date body attach
+
+	Goto	read_next_message
+
+end_process:
+	// Return from this script, back to 3DME
+
+	Return
+
+// 
+---------------------------------------------------------------------------------------------------------------------------------
+// __delete is always where the script execution begins for deleting emails
+// 
+---------------------------------------------------------------------------------------------------------------------------------
+
+__delete:
+
+	convertReservedURI __user_name
+	convertReservedURI __user_pass
+
+	// Go read the inbox
+
+	OnError	err_connect
+	SetVar	inbox_url  "http://imp.free.fr/horde/imp/mailbox.php3?actionID=6&mailbox=INBOX&imapuser=" __user_name "&pass=" __user_pass "&server=imap.free.fr&port=143&folders=INBOX"
+	GetHTTP	inbox_data inbox_url
+
+	// Check for invalid user/pass
+
+	Call	check_for_auth_error
+
+	//Error	__delete_me
+	OnError	err_delete
+	SetVar	delete_url  "http://imp.free.fr/horde/imp/message.php3?actionID=1&index=" __delete_me "&start=0&array_index=0"
+	GetHTTP	delete_data delete_url
+
+	// Return from this script, back to 3DME
+
+	Return
+
+// 
+---------------------------------------------------------------------------------------------------------------------------------
+// See if this is a page asking for our user/pass
+// 
+---------------------------------------------------------------------------------------------------------------------------------
+
+check_for_auth_error:
+
+	OnError	auth_okay
+	Find	inbox_data "Please login again"
+	Error	"Check your username/password"
+
+auth_okay:
+
+	Return
+
+// 
+---------------------------------------------------------------------------------------------------------------------------------
+// Errors
+// 
+---------------------------------------------------------------------------------------------------------------------------------
+
+err_messg:
+	Error	"Unable to read message"
+
+err_messg_id:
+	Error	"Unable to read message ID"
+
+err_messg_date:
+	Error	"Unable to read message date"
+
+err_messg_from:
+	Error	"Unable to read message expeditor"
+
+err_messg_to:
+	Error	"Unable to read message destinator"
+
+err_messg_subj:
+	Error	"Unable to read message subject"
+
+err_messg_body:
+	Error	"Unable to read message body"
+
+err_connect:
+	Error	"Unable to connect to Free"
+
+err_delete:
+	Error	"Error trying to delete email"
+
+err_inbox:
+	Error	"Unable to locate inbox"
+
+// 
+---------------------------------------------------------------------------------------------------------------------------------
+// End
+// 
+---------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
